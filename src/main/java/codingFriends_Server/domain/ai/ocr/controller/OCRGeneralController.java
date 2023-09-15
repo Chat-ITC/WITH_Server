@@ -18,9 +18,9 @@ public class OCRGeneralController {
 
     private final OCRGeneralService ocrService;
 
-    @Value("${ocr.url}")
+    @Value("${spring.ocr.url}")
     String apiURL;
-    @Value("${ocr.key}")
+    @Value("${spring.ocr.key}")
     String secretKey;
 
     @PostMapping("/processImage")

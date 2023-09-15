@@ -30,7 +30,7 @@ public class NaverLoginBO {
     @Value("${spring.client.session-state}")
     private String SESSION_STATE;
 
-    @Value("${spring.profile-api-url}")
+    @Value("${spring.client.profile-api-url}")
     private String PROFILE_API_URL;
 
 

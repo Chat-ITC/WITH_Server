@@ -2,13 +2,11 @@ package codingFriends_Server.domain.SummeryCode.entity;
 
 import codingFriends_Server.domain.Member.entity.Member;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@RequiredArgsConstructor
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -37,10 +37,6 @@ public class SecurityConfig {
                 .disable()
                 .formLogin()
                 .disable()
-                .headers().frameOptions()
-                .disable()
-
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -52,7 +48,8 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("하고싶은 대로");
+                .anyRequest().authenticated();
+
         return http.build();
     }
 }

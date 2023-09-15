@@ -5,12 +5,16 @@ import codingFriends_Server.domain.Member.repository.MemberRepository;
 import codingFriends_Server.global.common.exception.CustomException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
 import java.util.Date;
+@Component
 @RequiredArgsConstructor
 public class TokenProvider {
 

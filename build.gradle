@@ -33,7 +33,6 @@ dependencies {
 	implementation 'org.json:json:20211205'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws
 	compileOnly 'org.projectlombok:lombok' // lombok
 	runtimeOnly 'com.h2database:h2' //h2
 	runtimeOnly 'com.mysql:mysql-connector-j' // mysql
