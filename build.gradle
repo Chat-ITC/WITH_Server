@@ -1,0 +1,49 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.15'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // jpa
+	implementation 'org.springframework.boot:spring-boot-starter-security' // security
+ 	implementation 'org.springframework.boot:spring-boot-starter-web' // web
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.1', 'io.jsonwebtoken:jjwt-jackson:0.11.1'
+	//JSON
+	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation 'org.json:json:20211205'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws
+	compileOnly 'org.projectlombok:lombok' // lombok
+	runtimeOnly 'com.h2database:h2' //h2
+	runtimeOnly 'com.mysql:mysql-connector-j' // mysql
+	annotationProcessor 'org.projectlombok:lombok' // lombok
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-validation' //validation
+	implementation 'com.github.scribejava:scribejava-core:2.8.1' //scribe java -> oauth 인증 할 때 사용
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

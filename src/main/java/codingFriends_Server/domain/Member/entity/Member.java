@@ -1,0 +1,75 @@
+package codingFriends_Server.domain.Member.entity;
+
+import codingFriends_Server.domain.SummeryCode.entity.SummeryCode;
+import codingFriends_Server.global.auth.oauth.LoginProvider;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Member implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String name;
+    @Column
+    private String email;
+    @Column
+    private String snsId;
+    @Column
+    private String fav_language;
+    @Column
+    private String skill_language;
+    @Enumerated(EnumType.STRING)
+    private LoginProvider loginProvider;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<SummeryCode> summeryCodeList = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() { // memberPrincipal 클래스에서 인증된 멤버 객체 정보를 받아올 때 보내줌
+        return snsId;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+}
