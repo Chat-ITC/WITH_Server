@@ -1,6 +1,9 @@
 package codingFriends_Server.global.auth.jwt;
 
+import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
@@ -25,9 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .setAuthentication(
                             tokenProvider.getAuthentication(jwt)
                     );
-            filterChain.doFilter(request, response);
+        } else {
+            log.info("유효한 토큰이 없습니다.");
         }
+        filterChain.doFilter(request, response); // jwt를 가지고 있으면 SecurityContextHolder에 저장을 하고 없으면 넘어감
     }
+
     //HttpServletRequest로 부터 token 추출
     private String retrieveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

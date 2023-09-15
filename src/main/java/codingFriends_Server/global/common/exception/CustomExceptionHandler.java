@@ -25,7 +25,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponseEntity> handleCustomException(CustomException e) {
+    protected ResponseEntity<ErrorResponseEntity> handleCustomException(CustomException e) {
         return ErrorResponseEntity.toResponseEntity(e);
     }
 }
