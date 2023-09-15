@@ -12,7 +12,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedHeaders("*")
-//                .allowCredentials(true)
                 .exposedHeaders("accessToken","refreshToken")
                 .allowedMethods(
                         HttpMethod.GET.name(),

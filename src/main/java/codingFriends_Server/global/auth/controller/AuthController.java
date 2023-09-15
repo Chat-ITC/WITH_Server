@@ -5,7 +5,6 @@ import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.auth.dto.response.OauthResponseDto;
 import codingFriends_Server.global.auth.dto.response.SignupResponseDto;
-import codingFriends_Server.global.auth.dto.response.TokenResponseDto;
 import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import codingFriends_Server.global.auth.oauth.kakao.KakaoLoginBO;
@@ -29,14 +28,17 @@ public class AuthController {
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
 
-    @RequestMapping(value = "/naver/callback", method = {RequestMethod.GET, RequestMethod.POST})
+
+     //OAuth는 회원가입과 로그인이 동일해서 추가 회원가입만 고려하면 됨
+
+    @RequestMapping(value = "/naver/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 네이버 로그인
     public ResponseEntity<SignupResponseDto> naverLogin(@RequestParam String code, @RequestParam String state) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = naverLoginBO.getAccessToken(code, state);
         OauthResponseDto responseDto = naverLoginBO.getUserProfile(oAuth2AccessToken);
         SignupResponseDto signupResponseDto = new SignupResponseDto(responseDto, LoginProvider.NAVER);
 
-        Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // 추가 회원가입 과정
+        Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(signupResponseDto);
@@ -49,14 +51,14 @@ public class AuthController {
                 .body(signupResponseDto);
     }
 
-    @RequestMapping(value = "/kakao/callback", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/kakao/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 카카오 로그인
     public ResponseEntity<SignupResponseDto> kakaoLogin(@RequestParam String code, @RequestParam String state) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = kakaoLoginBO.getAccessToken(code);
         OauthResponseDto responseDto = kakaoLoginBO.getUserProfile(oAuth2AccessToken);
         SignupResponseDto signupResponseDto = new SignupResponseDto(responseDto, LoginProvider.KAKAO);
 
-        Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // 추가 회원가입 과정
+        Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(signupResponseDto);
@@ -69,7 +71,7 @@ public class AuthController {
                 .body(signupResponseDto);
     }
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/auth/signup") // 추가 회원가입
     ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         memberService.signup(signupRequestDto);
         return ResponseEntity.ok()

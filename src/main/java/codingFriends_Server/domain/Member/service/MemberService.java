@@ -22,14 +22,14 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public Member signup(SignupRequestDto signupRequestDto) {
+    public Member signup(SignupRequestDto signupRequestDto) { // 회원가입
         Member member = signupRequestDto.of();
         memberRepository.save(member);
         return member;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { // snsId로 사용자 호출
         return memberRepository.findBySnsId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }

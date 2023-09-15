@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
-public class SignupRequestDto {
+public class SignupRequestDto { // 추가 회원가입을 할 때 받는 정보
     private String name;
     private String email;
     private LoginProvider loginProvider;

@@ -5,7 +5,7 @@ import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.Data;
 
 @Data
-public class SignupResponseDto {
+public class SignupResponseDto { //OAuth로부터 얻는 사용자 정보 + 로그인 유형
     private String name;
     private String email;
     private LoginProvider loginProvider;
