@@ -66,7 +66,7 @@ public class TokenProvider {
     }
 
     //User의 정보를 가져온다.
-    public UsernamePasswordAuthenticationToken getAuthentication(String token) { // memberRepository 생성 해야됨
+    public UsernamePasswordAuthenticationToken getAuthentication(String token) {
         //@AuthenticationPrincipal에서 필요한 정보 여기에 담기
         String snsId = getsnsIdFromToken(token);
         Member member = memberRepository.findBySnsId(snsId)
