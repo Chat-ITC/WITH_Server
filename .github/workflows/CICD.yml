@@ -41,9 +41,10 @@ jobs:
 
       - name: Docker build
         run: |
-          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
-          docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }} .
-          docker push ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
+          echo ${{ secrets.DOCKER_PW }} | docker login -u ${{ secrets.DOCKER_ID }} --password-stdin
+          docker build -t ${{ secrets.DOCKER_ID }}/codingfriends .
+          docker push ${{ secrets.DOCKER_ID }}/codingfriends
+
 #          도커 이미지를 빌드하고, 로그인 한 후 푸시합니다.
 
       - name: EC2 Deploy
