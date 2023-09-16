@@ -1,5 +1,6 @@
 package codingFriends_Server.domain.ai.chatGpt.service;
 
+import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import codingFriends_Server.domain.ai.chatGpt.request.ChatRequest;
 import codingFriends_Server.domain.ai.chatGpt.response.ChatResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,11 +37,18 @@ public class ChatGptService {
     }
 
     @Async
-    public ChatResponse askQuestion(String prompt) {
+    public String askQuestion(String prompt) {
         ChatRequest chatRequest = new ChatRequest(model, prompt);
         RestTemplate restTemplate = new RestTemplate();
         ChatResponse response = restTemplate.postForObject(apiUrl, getHttpEntity(chatRequest), ChatResponse.class);
-        return response;
+
+        List<ChatResponse.Choice> choiceList = response.getChoices();
+
+        List<String> messageTexts = choiceList.stream().map(ChatResponse.Choice::getMessage)
+                .map(Message::getContent)
+                .collect(Collectors.toList());
+        System.out.println("response = " + response);
+        return String.join("\n", messageTexts);
     }
 }
 
