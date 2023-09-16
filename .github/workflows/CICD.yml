@@ -24,7 +24,7 @@ jobs:
 
           # github에 있는 secretKey를 이용해서 application-dev.yml 생성
       - uses: actions/checkout@v3
-      - name: Make application-dev.properties
+      - name: Make application-dev.yml
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.PROPERTIES }}" > src/main/resources/application-dev.yml
