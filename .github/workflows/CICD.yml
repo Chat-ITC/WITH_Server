@@ -54,7 +54,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
-            docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
-            docker run -d --rm --name ${{ secrets.DOCKER_IMAGE_NAME }} -p 8080:8080 ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            docker stop codingfriends-server-container 
+            docker run -d --rm --name codingfriends-server-container -p 8080:8080 ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
 #           EC2 인스턴스로 SSH 연결하여 도커 이미지를 풀링하고 컨테이너를 생성합니다.
 
