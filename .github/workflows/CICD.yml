@@ -1,0 +1,58 @@
+name: CICD
+
+on: #어느 상황에서 실행되는지 설정
+  pull_request:
+    branches: ["deploy"]
+
+permissions:
+  contents: read # 읽기 전용으로 생성
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest # ubuntu 최신 버전에서 실행됨
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+          # github에 있는 secretKey를 이용해서 application-dev.yml 생성
+      - uses: actions/checkout@v3
+      - name: Make application-dev.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.PROPERTIES }}" > src/main/resources/application-dev.yml
+          find src
+          
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
+
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
+          docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker push ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
+#          도커 이미지를 빌드하고, 로그인 한 후 푸시합니다.
+
+      - name: EC2 Deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
+            docker run -d --rm --name ${{ secrets.DOCKER_IMAGE_NAME }} -p 8080:8080 ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}
+#           EC2 인스턴스로 SSH 연결하여 도커 이미지를 풀링하고 컨테이너를 생성합니다.
+    
