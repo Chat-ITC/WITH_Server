@@ -5,6 +5,7 @@ import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.auth.dto.response.OauthResponseDto;
 import codingFriends_Server.global.auth.dto.response.SignupResponseDto;
+import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import codingFriends_Server.global.auth.oauth.kakao.KakaoLoginBO;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,7 +53,7 @@ public class AuthController {
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
-        authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+        authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
         ResponseCookie responseCookie;
         responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
@@ -76,7 +78,7 @@ public class AuthController {
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
-        authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+        authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
         ResponseCookie responseCookie;
         responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
@@ -91,5 +93,24 @@ public class AuthController {
         memberService.signup(signupRequestDto);
         return ResponseEntity.ok()
                 .body("추가 회원가입 성공");
+    }
+    @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
+    public ResponseEntity<?> makeAccessTokenFromRefreshToken(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        String snsId = memberPrincipal.getMember().getSnsId();
+        if (!authService.getRefreshToken(snsId)) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "refreshToken이 존재하지 않거나 저장되어 있지 않습니다.");
+        }
+        authService.deleteRefreshToken(snsId);
+        String accessToken = tokenProvider.createAccessToken(snsId);
+        String refreshToken = tokenProvider.createRefreshToken(snsId);
+
+        authService.saveRefreshToken(snsId, refreshToken);
+        ResponseCookie responseCookie;
+        responseCookie = authService.createHttpOnlyCookie(refreshToken);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header("accessToken", accessToken)
+                .body("refreshToken 재발급 완료");
     }
 }

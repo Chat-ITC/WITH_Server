@@ -4,6 +4,7 @@ import codingFriends_Server.domain.Member.dto.request.MemberUpdateRequestDto;
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
+import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.service.AuthService;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class MemberController {
                 .body(updateMember);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("member/logout")
     public ResponseEntity<?> logoutMember(@AuthenticationPrincipal MemberPrincipal memberPrincipal,
                                           @RequestHeader("Authorization") String accessToken) {
         if (accessToken == null) {
