@@ -8,18 +8,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
 import java.util.Date;
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
 
     private final MemberRepository memberRepository;
-    @Value("${JWT_SECRET_KEY")
+    @Value("${JWT_SECRET_KEY}")
     private String JWT_SECRET_KEY;
 
     private final Long accessTokenValidTime = 1000 * 60L * 60L; // 60분
