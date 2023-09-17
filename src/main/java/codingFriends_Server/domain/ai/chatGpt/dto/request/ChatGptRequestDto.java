@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.ai.chatGpt.request;
+package codingFriends_Server.domain.ai.chatGpt.dto.request;
 
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import lombok.Data;
@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ChatRequest {
+public class ChatGptRequestDto {
 
     private String model;
     private List<Message> messages;
     private int max_tokens;
 
-    public ChatRequest(String model, String content) {
+    public ChatGptRequestDto(String model, String content) {
         this.model = model;
         this.messages = new ArrayList<>();
         this.messages.add(new Message("user", content));
