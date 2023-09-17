@@ -10,9 +10,12 @@ import codingFriends_Server.global.auth.oauth.LoginProvider;
 import codingFriends_Server.global.auth.oauth.kakao.KakaoLoginBO;
 import codingFriends_Server.global.auth.oauth.naver.NaverLoginBO;
 import codingFriends_Server.global.auth.service.AuthService;
+import codingFriends_Server.global.common.exception.CustomException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +50,14 @@ public class AuthController {
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
+
         authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+        ResponseCookie responseCookie;
+        responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
         return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
                 .header("accessToken", accessToken)
-                .header("refreshToken", refreshToken)
                 .body(signupResponseDto);
     }
 
@@ -69,11 +75,14 @@ public class AuthController {
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
+
         authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+        ResponseCookie responseCookie;
+        responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
         return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
                 .header("accessToken", accessToken)
-                .header("refreshToken", refreshToken)
                 .body(signupResponseDto);
     }
 
