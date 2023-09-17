@@ -9,6 +9,7 @@ import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import codingFriends_Server.global.auth.oauth.kakao.KakaoLoginBO;
 import codingFriends_Server.global.auth.oauth.naver.NaverLoginBO;
+import codingFriends_Server.global.auth.service.AuthService;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class AuthController {
     private final KakaoLoginBO kakaoLoginBO;
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
+    private final AuthService authService;
 
 
      //OAuth는 회원가입과 로그인이 동일해서 추가 회원가입만 고려하면 됨
@@ -45,6 +47,8 @@ public class AuthController {
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
+        authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+
         return ResponseEntity.ok()
                 .header("accessToken", accessToken)
                 .header("refreshToken", refreshToken)
@@ -65,13 +69,15 @@ public class AuthController {
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
+        authService.saveRefreshToken(refreshToken, memberOptional.get().getSnsId());
+
         return ResponseEntity.ok()
                 .header("accessToken", accessToken)
                 .header("refreshToken", refreshToken)
                 .body(signupResponseDto);
     }
 
-    @PostMapping("/auth/signup") // 추가 회원가입
+    @PostMapping("/member/signup") // 추가 회원가입
     ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         memberService.signup(signupRequestDto);
         return ResponseEntity.ok()
