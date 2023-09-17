@@ -18,7 +18,7 @@ public class SummeryCode {
 
     @Column(nullable = false)
     private String title;
-    @Column(length = 1000, nullable = false)
+    @Column(length = 2000, nullable = false)
     private String content;
     @Enumerated(EnumType.STRING)
     private ScrapStatus scrapStatus;
