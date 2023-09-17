@@ -1,6 +1,5 @@
 package codingFriends_Server.domain.ai.chatGpt.controller;
 
-import codingFriends_Server.domain.ai.chatGpt.response.ChatResponse;
 import codingFriends_Server.domain.ai.chatGpt.service.ChatGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

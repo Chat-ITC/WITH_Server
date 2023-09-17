@@ -1,8 +1,9 @@
 package codingFriends_Server.domain.ai.chatGpt.service;
 
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
-import codingFriends_Server.domain.ai.chatGpt.request.ChatRequest;
-import codingFriends_Server.domain.ai.chatGpt.response.ChatResponse;
+import codingFriends_Server.domain.ai.chatGpt.dto.request.ChatGptRequestDto;
+import codingFriends_Server.domain.ai.chatGpt.dto.response.ChatGptChoiceResponseDto;
+import codingFriends_Server.domain.ai.chatGpt.dto.response.ChatGptResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,23 +29,23 @@ public class ChatGptService {
     @Value("${spring.openai.api.api-key}")
     private String openaiApiKey;
 
-    private HttpEntity<ChatRequest> getHttpEntity(ChatRequest chatRequest) {
+    private HttpEntity<ChatGptRequestDto> getHttpEntity(ChatGptRequestDto chatRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer " + openaiApiKey);
-        HttpEntity<ChatRequest> httpRequest = new HttpEntity<>(chatRequest, headers);
+        HttpEntity<ChatGptRequestDto> httpRequest = new HttpEntity<>(chatRequest, headers);
         return httpRequest;
     }
 
     @Async
     public String askQuestion(String prompt) {
-        ChatRequest chatRequest = new ChatRequest(model, prompt);
+        ChatGptRequestDto chatGptRequestDto = new ChatGptRequestDto(model, prompt);
         RestTemplate restTemplate = new RestTemplate();
-        ChatResponse response = restTemplate.postForObject(apiUrl, getHttpEntity(chatRequest), ChatResponse.class);
+        ChatGptResponseDto response = restTemplate.postForObject(apiUrl, getHttpEntity(chatGptRequestDto), ChatGptResponseDto.class);
 
-        List<ChatResponse.Choice> choiceList = response.getChoices();
+        List<ChatGptChoiceResponseDto> choiceList = response.getChoices();
 
-        List<String> messageTexts = choiceList.stream().map(ChatResponse.Choice::getMessage)
+        List<String> messageTexts = choiceList.stream().map(ChatGptChoiceResponseDto::getMessage)
                 .map(Message::getContent)
                 .collect(Collectors.toList());
         System.out.println("response = " + response);
