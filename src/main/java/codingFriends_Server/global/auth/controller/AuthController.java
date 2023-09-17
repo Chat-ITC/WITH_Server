@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/kakao/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 카카오 로그인
-    public ResponseEntity<SignupResponseDto> kakaoLogin(@RequestParam String code, @RequestParam String state) throws IOException {
+    public ResponseEntity<SignupResponseDto> kakaoLogin(@RequestParam String code) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = kakaoLoginBO.getAccessToken(code);
         OauthResponseDto responseDto = kakaoLoginBO.getUserProfile(oAuth2AccessToken);
