@@ -19,9 +19,9 @@ public class ChatGptController {
     private final ChatGptService communityService;
 
     @PostMapping("")
-    public ResponseEntity<ChatResponse> ChatGpt(@RequestBody String prompt) {
+    public ResponseEntity<String> ChatGpt(@RequestBody String prompt) {
 
-        ChatResponse chatResponse = communityService.askQuestion(prompt);
+        String chatResponse = communityService.askQuestion(prompt);
         System.out.println("chatResponse = " + chatResponse);
         return ResponseEntity.ok(chatResponse);
 
