@@ -26,4 +26,5 @@ public class ChatGptController {
         return ResponseEntity.ok(chatResponse);
 
     }
+
 }
