@@ -24,6 +24,10 @@ public class AuthService {
         redisTemplate.opsForValue().set(accessToken,"blacklist",Duration.ofHours(1));
     }
 
+    public Boolean getRefreshToken(String snsId) {
+        return redisTemplate.hasKey(snsId);
+    }
+
     public ResponseCookie createHttpOnlyCookie(String refreshToken) {
         //HTTPONLY쿠키에 RefreshToken 생성 후, 전달
         ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken)
