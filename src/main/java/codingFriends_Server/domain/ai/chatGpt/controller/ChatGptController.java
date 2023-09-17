@@ -21,9 +21,6 @@ public class ChatGptController {
     public ResponseEntity<String> ChatGpt(@RequestBody String prompt) {
 
         String chatResponse = communityService.askQuestion(prompt);
-        System.out.println("chatResponse = " + chatResponse);
         return ResponseEntity.ok(chatResponse);
-
     }
-//git merge test
 }

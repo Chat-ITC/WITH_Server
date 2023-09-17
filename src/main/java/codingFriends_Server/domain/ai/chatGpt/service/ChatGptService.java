@@ -48,7 +48,6 @@ public class ChatGptService {
         List<String> messageTexts = choiceList.stream().map(ChatGptChoiceResponseDto::getMessage)
                 .map(Message::getContent)
                 .collect(Collectors.toList());
-        System.out.println("response = " + response);
         return String.join("\n", messageTexts);
     }
 }
