@@ -22,9 +22,7 @@ public class ChatGptController {
     public ResponseEntity<ChatResponse> ChatGpt(@RequestBody String prompt) {
 
         ChatResponse chatResponse = communityService.askQuestion(prompt);
-        System.out.println("chatResponse = " + chatResponse);
         return ResponseEntity.ok(chatResponse);
-
     }
 
 }

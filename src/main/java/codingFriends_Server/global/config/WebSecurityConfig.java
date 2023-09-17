@@ -18,6 +18,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         HttpMethod.POST.name(),
                         HttpMethod.PATCH.name(),
                         HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name());
+                        HttpMethod.DELETE.name())
+                .allowCredentials(false); // withCredentials 비활성화
+
     }
 }
