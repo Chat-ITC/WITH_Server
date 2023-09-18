@@ -4,6 +4,7 @@ import codingFriends_Server.domain.SummeryCode.entity.SummeryCode;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,11 @@ public class Member implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
     }
+
 
     @Override
     public String getPassword() { // memberPrincipal 클래스에서 인증된 멤버 객체 정보를 받아올 때 보내줌
