@@ -47,11 +47,10 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
 
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider,redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/kakao/callback", "/naver/callback", "/member/signup","/hello").permitAll()
                 .anyRequest().authenticated();
-
         return http.build();
     }
 }
