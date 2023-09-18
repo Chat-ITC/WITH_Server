@@ -68,7 +68,7 @@ public class TokenProvider {
                     .parseClaimsJws(token).getBody();
             return true;
         } catch (Exception e) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "토큰 Validate 과정에서 에러가 생겼습니다.");
+            return false;
         }
     }
 
