@@ -26,7 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = retrieveToken(request);
-        log.info("토큰 잘 받았어요", jwt);
+        log.info("토큰 잘 받았어요");
+        log.info(jwt);
         if (StringUtils.hasText(jwt) && tokenProvider.validateAccessToken(jwt)) {
             log.info("토큰 검사 잘 됐어요");
             String isLogout = (String) redisTemplate.opsForValue().get(jwt);
@@ -36,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .getContext()
                         .setAuthentication(
                                 tokenProvider.getAuthentication(jwt)
-
                         );
             }
         } else {
@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("Authorization 유무 :",bearerToken );
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             log.info("토큰 잘 추출했어요");
+            log.info(bearerToken);
             return bearerToken.substring(7);
         }
         return null;
