@@ -14,6 +14,7 @@ import codingFriends_Server.global.auth.service.AuthService;
 import codingFriends_Server.global.common.exception.CustomException;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final NaverLoginBO naverLoginBO;
@@ -99,12 +101,19 @@ public class AuthController {
         if (refreshToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "refreshToken이 존재하지 않습니다.");
         }
+
         String snsId = authService.getsnsIdFromRefreshToken(refreshToken);
+        log.info("snsId 값");
+        log.info(snsId);
         authService.deleteRefreshToken(refreshToken);
+        log.info("삭제 성공");
         String new_accessToken = tokenProvider.createAccessToken(snsId);
+        log.info("accessToken 생성 성공");
         String new_refreshToken = tokenProvider.createRefreshToken(snsId);
+        log.info("refreshToken 생성 성공");
 
         authService.saveRefreshToken(refreshToken, snsId);
+        log.info("저장 성공");
 
 
         return ResponseEntity.ok()
