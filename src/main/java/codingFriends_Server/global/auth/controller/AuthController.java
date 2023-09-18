@@ -102,7 +102,7 @@ public class AuthController {
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         String snsId = memberPrincipal.getMember().getSnsId();
         if (!authService.getRefreshToken(snsId)) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "there is no refreshToken in redis");
+            throw new CustomException(HttpStatus.CONFLICT, "no refreshToken in redis");
         }
         authService.deleteRefreshToken(snsId);
         String accessToken = tokenProvider.createAccessToken(snsId);
