@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Struct;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberUpdateRequestDto {
-    private String fav_language;
+public class MemberLanguageUpdateRequestDto {
     private String skill_language;
+
 }

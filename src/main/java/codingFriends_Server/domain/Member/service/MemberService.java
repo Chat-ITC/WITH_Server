@@ -1,10 +1,11 @@
 package codingFriends_Server.domain.Member.service;
 
-import codingFriends_Server.domain.Member.dto.request.MemberUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberLanguageUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberSkillUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.repository.MemberRepository;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
-import codingFriends_Server.global.auth.dto.response.SignupResponseDto;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,15 +39,24 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public Member updateMember(String snsId, MemberUpdateRequestDto memberUpdateRequestDto) {
+    public MemberInfoResponseDto updateMemberSkill(String snsId, MemberSkillUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
         if (memberUpdateRequestDto.getFav_language() != null) {
             member.setFav_language(memberUpdateRequestDto.getFav_language());
         }
+        memberRepository.save(member);
+        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
+        return memberInfoResponseDto;
+    }
+    @Transactional
+    public MemberInfoResponseDto updateMemberLanguage(String snsId, MemberLanguageUpdateRequestDto memberUpdateRequestDto) {
+        Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
+
         if (memberUpdateRequestDto.getSkill_language() != null) {
             member.setSkill_language(memberUpdateRequestDto.getSkill_language());
         }
-        return memberRepository.save(member);
+        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
+        return memberInfoResponseDto;
     }
 }
