@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberSkillUpdateRequestDto {
-    private String fav_language;
-
+    private String skill_language;
 }
