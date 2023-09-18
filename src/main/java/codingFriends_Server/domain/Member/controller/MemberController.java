@@ -1,9 +1,8 @@
 package codingFriends_Server.domain.Member.controller;
 
-import codingFriends_Server.domain.Member.dto.request.MemberLanguageUpdateRequestDto;
-import codingFriends_Server.domain.Member.dto.request.MemberSkillUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberFavLanguageRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberlevelUpdateRequestDto;
 import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
-import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.auth.service.AuthService;
@@ -27,12 +26,12 @@ public class MemberController {
     }
 
 
-    @PatchMapping("/member/update/skill") // member skill 수정
+    @PatchMapping("/member/update/level") // member skill 수정
     public ResponseEntity<?> updateMemberSkill(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestBody MemberSkillUpdateRequestDto memberSkillUpdateRequestDto) {
+            @RequestBody MemberlevelUpdateRequestDto memberlevelUpdateRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
-        MemberInfoResponseDto updateMember = memberService.updateMemberSkill(snsId, memberSkillUpdateRequestDto);
+        MemberInfoResponseDto updateMember = memberService.updateMemberLevel(snsId, memberlevelUpdateRequestDto);
         return ResponseEntity.ok()
                 .body(updateMember);
     }
@@ -40,9 +39,9 @@ public class MemberController {
     @PatchMapping("/member/update/language") // member language 수정
     public ResponseEntity<?> updateMemberLanguage(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestBody MemberLanguageUpdateRequestDto memberLanguageUpdateRequestDto) {
+            @RequestBody MemberFavLanguageRequestDto memberFavLanguageRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
-        MemberInfoResponseDto updateMember = memberService.updateMemberLanguage(snsId, memberLanguageUpdateRequestDto);
+        MemberInfoResponseDto updateMember = memberService.updateMemberLanguage(snsId, memberFavLanguageRequestDto);
         return ResponseEntity.ok()
                 .body(updateMember);
     }

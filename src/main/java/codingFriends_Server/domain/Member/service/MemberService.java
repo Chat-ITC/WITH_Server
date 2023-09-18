@@ -1,7 +1,7 @@
 package codingFriends_Server.domain.Member.service;
 
-import codingFriends_Server.domain.Member.dto.request.MemberLanguageUpdateRequestDto;
-import codingFriends_Server.domain.Member.dto.request.MemberSkillUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberlevelUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberFavLanguageRequestDto;
 import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.repository.MemberRepository;
@@ -39,22 +39,22 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public MemberInfoResponseDto updateMemberSkill(String snsId, MemberSkillUpdateRequestDto memberUpdateRequestDto) {
+    public MemberInfoResponseDto updateMemberLevel(String snsId, MemberlevelUpdateRequestDto memberlevelUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
-        if (memberUpdateRequestDto.getSkill_language() != null) {
-            member.setFav_language(memberUpdateRequestDto.getSkill_language());
+        if (memberlevelUpdateRequestDto.getUser_level() != null) {
+            member.setSkill_language(memberlevelUpdateRequestDto.getUser_level());
         }
         memberRepository.save(member);
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
         return memberInfoResponseDto;
     }
     @Transactional
-    public MemberInfoResponseDto updateMemberLanguage(String snsId, MemberLanguageUpdateRequestDto memberUpdateRequestDto) {
+    public MemberInfoResponseDto updateMemberLanguage(String snsId, MemberFavLanguageRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
-        if (memberUpdateRequestDto.getFav_language() != null) {
-            member.setSkill_language(memberUpdateRequestDto.getFav_language());
+        if (memberUpdateRequestDto.getSkill_language() != null) {
+            member.setSkill_language(memberUpdateRequestDto.getSkill_language());
         }
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
         return memberInfoResponseDto;

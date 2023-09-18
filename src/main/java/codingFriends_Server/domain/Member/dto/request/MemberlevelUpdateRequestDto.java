@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberSkillUpdateRequestDto {
-    private String skill_language;
+public class MemberlevelUpdateRequestDto { // 유저 실력
+    private String user_level;
+
 }

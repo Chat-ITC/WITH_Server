@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class MemberInfoResponseDto {
     private String name;
     private String email;
-    private String fav_language;
+    private String user_level;
     private String skill_language;
 
     public MemberInfoResponseDto(Member member) {
         this.name = member.getName();
         this.email = member.getEmail();
-        this.fav_language = member.getFav_language();
+        this.user_level = member.getUser_level();
         this.skill_language = member.getSkill_language();
     }
 }
