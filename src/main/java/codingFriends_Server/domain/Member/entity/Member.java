@@ -49,12 +49,12 @@ public class Member implements UserDetails {
 
     @Override
     public String getPassword() { // memberPrincipal 클래스에서 인증된 멤버 객체 정보를 받아올 때 보내줌
-        return snsId;
+        return name;
     }
 
     @Override
     public String getUsername() {
-        return name;
+        return snsId;
     }
 
     @Override
