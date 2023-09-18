@@ -55,8 +55,8 @@ public class MemberController {
     }
 
     @PostMapping("member/logout")
-    public ResponseEntity<?> logoutMember(@CookieValue(value = "refreshToken", required = false) String refreshToken,
-                                          @RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<?> logoutMember(@RequestHeader("refreshToken") String refreshToken,
+                                          @RequestHeader("accessToken") String accessToken) {
         if (accessToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "accessToken이 없습니다.");
         }

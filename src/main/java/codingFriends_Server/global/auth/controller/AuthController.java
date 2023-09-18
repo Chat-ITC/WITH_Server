@@ -55,11 +55,9 @@ public class AuthController {
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
         authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
-        ResponseCookie responseCookie;
-        responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header("refreshToken",refreshToken)
                 .header("accessToken", accessToken)
                 .body(signupResponseDto);
     }
@@ -81,11 +79,9 @@ public class AuthController {
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
         authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
-        ResponseCookie responseCookie;
-        responseCookie = authService.createHttpOnlyCookie(refreshToken);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header("refreshToken",refreshToken)
                 .header("accessToken", accessToken)
                 .body(signupResponseDto);
     }
@@ -96,10 +92,10 @@ public class AuthController {
         return ResponseEntity.ok()
                 .body("추가 회원가입 성공");
     }
-    @GetMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
+    @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
     //jwt 로직에서 제외하기
     public ResponseEntity<?> makeAccessTokenFromRefreshToken(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+            @RequestHeader("refreshToken")String refreshToken) {
         if (refreshToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "refreshToken이 존재하지 않습니다.");
         }
@@ -109,11 +105,10 @@ public class AuthController {
         String new_refreshToken = tokenProvider.createRefreshToken(snsId);
 
         authService.saveRefreshToken(refreshToken, snsId);
-        ResponseCookie responseCookie;
-        responseCookie = authService.createHttpOnlyCookie(new_refreshToken);
+
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header("refreshToken", new_refreshToken)
                 .header("accessToken", new_accessToken)
                 .body("refreshToken 재발급 완료");
     }
