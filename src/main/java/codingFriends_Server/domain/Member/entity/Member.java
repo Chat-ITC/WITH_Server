@@ -31,7 +31,7 @@ public class Member implements UserDetails {
     @Column
     private String snsId;
     @Column
-    private String fav_language;
+    private String user_level;
     @Column
     private String skill_language;
     @Enumerated(EnumType.STRING)
