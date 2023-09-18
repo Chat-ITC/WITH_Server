@@ -33,7 +33,9 @@ public class AiContoller {
     public ResponseEntity<?> summeryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
-            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+            @RequestParam("fav_language")String fav_language,
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal
+    ) {
         try {
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
@@ -42,7 +44,7 @@ public class AiContoller {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
 
-            String chat_result = chatGptService.askQuestion(question + ocr_result);
+            String chat_result = chatGptService.askQuestion(ocr_result,question,fav_language);
             summeryService.saveSummeryCode(chat_result, memberPrincipal.getMember());
             return ResponseEntity.ok()
                     .body(chat_result);

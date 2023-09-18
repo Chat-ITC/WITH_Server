@@ -38,7 +38,10 @@ public class ChatGptService {
     }
 
     @Async
-    public String askQuestion(String prompt) {
+    public String askQuestion(String ocr_result, String question, String fav_language) {
+        String prompt = "분야는 " + fav_language + " 입니다. 만약 '상관없음'이면 코딩 언어에 국한되지 않고 내용에 맞게 대답해줘"
+                + "다음 내용을 " + question + " 만약 '선택없음'이라면 내용 요약해줘 " + ocr_result;
+
         ChatGptRequestDto chatGptRequestDto = new ChatGptRequestDto(model, prompt);
         RestTemplate restTemplate = new RestTemplate();
         ChatGptResponseDto response = restTemplate.postForObject(apiUrl, getHttpEntity(chatGptRequestDto), ChatGptResponseDto.class);
