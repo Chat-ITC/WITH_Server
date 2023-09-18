@@ -27,7 +27,8 @@ public class TokenProvider {
     @Value("${JWT_SECRET_KEY}")
     private String JWT_SECRET_KEY;
 
-    private final Long accessTokenValidTime = 1000 * 60L * 60L; // 60분
+    //    private final Long accessTokenValidTime = 1000 * 60L * 60L; // 60분
+    private final Long accessTokenValidTime = 30000L;
     private final Long refreshTokenValidTime = 1000 * 60 * 60 * 24 * 7L; // 1주
 
     //AccessToken 생성
@@ -68,7 +69,7 @@ public class TokenProvider {
 
             return true;
         } catch (ExpiredJwtException e) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 만료 되었습니다.");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "your token has been expired");
         } catch (Exception e) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "토큰 Validate 과정에서 에러가 생겼습니다.");
         }
