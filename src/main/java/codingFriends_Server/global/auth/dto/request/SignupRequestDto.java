@@ -15,7 +15,7 @@ public class SignupRequestDto { // 추가 회원가입을 할 때 받는 정보
     private LoginProvider loginProvider;
     private String snsId;
     @NotBlank
-    private String fav_language;
+    private String user_level;
     @NotBlank
     private String skill_language;
 
@@ -25,7 +25,7 @@ public class SignupRequestDto { // 추가 회원가입을 할 때 받는 정보
                 .name(name)
                 .email(email)
                 .loginProvider(loginProvider)
-                .fav_language(fav_language)
+                .user_level(user_level)
                 .skill_language(skill_language)
                 .build();
     }
