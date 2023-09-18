@@ -1,22 +1,18 @@
 package codingFriends_Server.domain.Member.controller;
 
-import codingFriends_Server.domain.Member.dto.request.MemberUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberLanguageUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.request.MemberSkillUpdateRequestDto;
 import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
-import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.service.AuthService;
 import codingFriends_Server.global.common.exception.CustomException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,17 +27,27 @@ public class MemberController {
     }
 
 
-    @PatchMapping("/member/update")
-    public ResponseEntity<?> updateMember(
+    @PatchMapping("/member/update/skill") // member skill 수정
+    public ResponseEntity<?> updateMemberSkill(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
+            @RequestBody MemberSkillUpdateRequestDto memberSkillUpdateRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
-        Member updateMember = memberService.updateMember(snsId, memberUpdateRequestDto);
+        MemberInfoResponseDto updateMember = memberService.updateMemberSkill(snsId, memberSkillUpdateRequestDto);
         return ResponseEntity.ok()
                 .body(updateMember);
     }
 
-    @GetMapping("/member/update")
+    @PatchMapping("/member/update/language") // member language 수정
+    public ResponseEntity<?> updateMemberLanguage(
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+            @RequestBody MemberLanguageUpdateRequestDto memberLanguageUpdateRequestDto) {
+        String snsId = memberPrincipal.getMember().getSnsId();
+        MemberInfoResponseDto updateMember = memberService.updateMemberLanguage(snsId, memberLanguageUpdateRequestDto);
+        return ResponseEntity.ok()
+                .body(updateMember);
+    }
+
+    @GetMapping("/member/update") //member 정보 조회
     public ResponseEntity<?> getMemberInfo(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(memberPrincipal.getMember());
