@@ -99,22 +99,22 @@ public class AuthController {
     @GetMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
     //jwt 로직에서 제외하기
     public ResponseEntity<?> makeAccessTokenFromRefreshToken(
-            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        String snsId = memberPrincipal.getMember().getSnsId();
-        if (!authService.getRefreshToken(snsId)) {
-            throw new CustomException(HttpStatus.CONFLICT, "no refreshToken in redis");
+            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        if (refreshToken == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "refreshToken이 존재하지 않습니다.");
         }
-        authService.deleteRefreshToken(snsId);
-        String accessToken = tokenProvider.createAccessToken(snsId);
-        String refreshToken = tokenProvider.createRefreshToken(snsId);
+        String snsId = authService.getsnsIdFromRefreshToken(refreshToken);
+        authService.deleteRefreshToken(refreshToken);
+        String new_accessToken = tokenProvider.createAccessToken(snsId);
+        String new_refreshToken = tokenProvider.createRefreshToken(snsId);
 
-        authService.saveRefreshToken(snsId, refreshToken);
+        authService.saveRefreshToken(refreshToken, snsId);
         ResponseCookie responseCookie;
-        responseCookie = authService.createHttpOnlyCookie(refreshToken);
+        responseCookie = authService.createHttpOnlyCookie(new_refreshToken);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
-                .header("accessToken", accessToken)
+                .header("accessToken", new_accessToken)
                 .body("refreshToken 재발급 완료");
     }
 }
