@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,6 +97,7 @@ public class AuthController {
                 .body("추가 회원가입 성공");
     }
     @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
+    @PreAuthorize("permitAll()")
     //jwt 로직에서 제외하기
     public ResponseEntity<?> makeAccessTokenFromRefreshToken(
             @RequestHeader("refreshToken")String refreshToken) {
