@@ -66,10 +66,7 @@ public class TokenProvider {
                     .setSigningKey(Base64Utils.encodeToString(JWT_SECRET_KEY.getBytes()))
                     .build()
                     .parseClaimsJws(token).getBody();
-
             return true;
-        } catch (ExpiredJwtException e) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "your token has been expired");
         } catch (Exception e) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "토큰 Validate 과정에서 에러가 생겼습니다.");
         }
@@ -106,7 +103,7 @@ public class TokenProvider {
             return claims;
         } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException
                  | IllegalStateException e) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "Token Decode 과정에서 에러가 생겼습니다.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Token Decode 과정에서 에러가 생겼습니다.");
         }
     }
 }

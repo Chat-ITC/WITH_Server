@@ -39,7 +39,7 @@ public class AiContoller {
             multipartFile.transferTo(file);
             String ocr_result = ocrGeneralService.processImage(apiURL, secretKey, file.getPath());
             if (ocr_result == null) {
-                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "response가 비어있습니다.");
+                throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
 
             String chat_result = chatGptService.askQuestion(question + ocr_result);
