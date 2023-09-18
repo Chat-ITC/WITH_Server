@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = retrieveToken(request);
-
+        log.info("토큰 잘 받았어요", jwt);
         if (StringUtils.hasText(jwt) && tokenProvider.validateAccessToken(jwt)) {
             log.info("토큰 검사 잘 됐어요");
             String isLogout = (String) redisTemplate.opsForValue().get(jwt);
