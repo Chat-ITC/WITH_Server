@@ -43,7 +43,7 @@ public class MemberService implements UserDetailsService {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
         if (memberlevelUpdateRequestDto.getUser_level() != null) {
-            member.setSkill_language(memberlevelUpdateRequestDto.getUser_level());
+            member.setUser_level(memberlevelUpdateRequestDto.getUser_level());
         }
         memberRepository.save(member);
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
