@@ -39,7 +39,7 @@ public class AuthController {
      //OAuth는 회원가입과 로그인이 동일해서 추가 회원가입만 고려하면 됨
 
     @RequestMapping(value = "/naver/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 네이버 로그인
-    public ResponseEntity<SignupResponseDto> naverLogin(@RequestParam String code, @RequestParam String state) throws IOException {
+    public ResponseEntity<?> naverLogin(@RequestParam String code, @RequestParam String state) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = naverLoginBO.getAccessToken(code, state);
         OauthResponseDto responseDto = naverLoginBO.getUserProfile(oAuth2AccessToken);
@@ -48,7 +48,7 @@ public class AuthController {
         Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(signupResponseDto);
+                    .body("No Account");
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/kakao/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 카카오 로그인
-    public ResponseEntity<SignupResponseDto> kakaoLogin(@RequestParam String code) throws IOException {
+    public ResponseEntity<?> kakaoLogin(@RequestParam String code) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = kakaoLoginBO.getAccessToken(code);
         OauthResponseDto responseDto = kakaoLoginBO.getUserProfile(oAuth2AccessToken);
@@ -73,7 +73,7 @@ public class AuthController {
         Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(signupResponseDto);
+                    .body("No Account");
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
@@ -96,10 +96,11 @@ public class AuthController {
     }
     @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
     //jwt 로직에서 제외하기
-    public ResponseEntity<?> makeAccessTokenFromRefreshToken(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    public ResponseEntity<?> makeAccessTokenFromRefreshToken(
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         String snsId = memberPrincipal.getMember().getSnsId();
         if (!authService.getRefreshToken(snsId)) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "refreshToken이 존재하지 않거나 저장되어 있지 않습니다.");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "there is no refreshToken in redis");
         }
         authService.deleteRefreshToken(snsId);
         String accessToken = tokenProvider.createAccessToken(snsId);
