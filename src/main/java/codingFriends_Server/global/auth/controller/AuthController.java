@@ -56,7 +56,7 @@ public class AuthController {
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
-        authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
+        authService.saveRefreshToken(refreshToken, signupResponseDto.getSnsId());
 
         return ResponseEntity.ok()
                 .header("refreshToken",refreshToken)
@@ -80,7 +80,8 @@ public class AuthController {
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
-        authService.saveRefreshToken(memberOptional.get().getSnsId(),refreshToken);
+        authService.saveRefreshToken(refreshToken, signupResponseDto.getSnsId());
+        log.info(authService.getsnsIdFromRefreshToken(refreshToken));
 
         return ResponseEntity.ok()
                 .header("refreshToken",refreshToken)
