@@ -80,8 +80,9 @@ public class TokenProvider {
         String snsId = getsnsIdFromToken(token);
         Member member = memberRepository.findBySnsId(snsId)
                 .orElseThrow(() -> new RuntimeException("Member 를 찾지 못했습니다."));
-        log.info("멤버 저장 잘 됐어요", member.toString());
         MemberPrincipal memberPrincipal = new MemberPrincipal(member);
+        log.info("멤버 저장 잘 됐어요");
+        log.info(memberPrincipal.toString());
         return new UsernamePasswordAuthenticationToken(memberPrincipal, token,
                 member.getAuthorities());
     }
