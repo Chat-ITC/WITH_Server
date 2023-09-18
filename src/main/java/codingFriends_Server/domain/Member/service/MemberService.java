@@ -42,8 +42,8 @@ public class MemberService implements UserDetailsService {
     public MemberInfoResponseDto updateMemberSkill(String snsId, MemberSkillUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
-        if (memberUpdateRequestDto.getFav_language() != null) {
-            member.setFav_language(memberUpdateRequestDto.getFav_language());
+        if (memberUpdateRequestDto.getSkill_language() != null) {
+            member.setFav_language(memberUpdateRequestDto.getSkill_language());
         }
         memberRepository.save(member);
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
@@ -53,8 +53,8 @@ public class MemberService implements UserDetailsService {
     public MemberInfoResponseDto updateMemberLanguage(String snsId, MemberLanguageUpdateRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
-        if (memberUpdateRequestDto.getSkill_language() != null) {
-            member.setSkill_language(memberUpdateRequestDto.getSkill_language());
+        if (memberUpdateRequestDto.getFav_language() != null) {
+            member.setSkill_language(memberUpdateRequestDto.getFav_language());
         }
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
         return memberInfoResponseDto;
