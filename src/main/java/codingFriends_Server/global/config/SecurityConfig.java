@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/kakao/callback", "/naver/callback", "/member/signup","/hello","/member/refreshToken").permitAll()
+                .antMatchers("/kakao/callback", "/naver/callback", "/member/signup","/hello","/member/refreshToken","/login").permitAll()
                 .anyRequest().authenticated();
         return http.build();
     }
