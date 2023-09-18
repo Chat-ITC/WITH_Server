@@ -5,6 +5,7 @@ import codingFriends_Server.domain.Member.repository.MemberRepository;
 import codingFriends_Server.global.common.exception.CustomException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class TokenProvider {
 
     private final MemberRepository memberRepository;
@@ -78,6 +80,7 @@ public class TokenProvider {
         String snsId = getsnsIdFromToken(token);
         Member member = memberRepository.findBySnsId(snsId)
                 .orElseThrow(() -> new RuntimeException("Member 를 찾지 못했습니다."));
+        log.info("멤버 저장 잘 됐어요", member.toString());
         MemberPrincipal memberPrincipal = new MemberPrincipal(member);
         return new UsernamePasswordAuthenticationToken(memberPrincipal, token,
                 member.getAuthorities());
