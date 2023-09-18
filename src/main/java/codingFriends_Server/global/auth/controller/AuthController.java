@@ -96,7 +96,7 @@ public class AuthController {
         return ResponseEntity.ok()
                 .body("추가 회원가입 성공");
     }
-    @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
+    @GetMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
     //jwt 로직에서 제외하기
     public ResponseEntity<?> makeAccessTokenFromRefreshToken(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
