@@ -1,6 +1,7 @@
 package codingFriends_Server.domain.Member.controller;
 
 import codingFriends_Server.domain.Member.dto.request.MemberUpdateRequestDto;
+import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.service.MemberService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
@@ -31,13 +32,21 @@ public class MemberController {
 
 
     @PatchMapping("/member/update")
-    ResponseEntity<?> updateMember(
+    public ResponseEntity<?> updateMember(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
         Member updateMember = memberService.updateMember(snsId, memberUpdateRequestDto);
         return ResponseEntity.ok()
                 .body(updateMember);
+    }
+
+    @GetMapping("/member/update")
+    public ResponseEntity<?> getMemberInfo(
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(memberPrincipal.getMember());
+        return ResponseEntity.ok()
+                .body(memberInfoResponseDto);
     }
 
     @PostMapping("member/logout")
