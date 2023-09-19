@@ -27,8 +27,8 @@ public class TokenProvider {
     @Value("${JWT_SECRET_KEY}")
     private String JWT_SECRET_KEY;
 
-    //    private final Long accessTokenValidTime = 1000 * 60L * 60L; // 60분
-    private final Long accessTokenValidTime = 30000L;
+        private final Long accessTokenValidTime = 1000 * 60L * 60 * 24L; // 하루
+//    private final Long accessTokenValidTime = 30000L;
     private final Long refreshTokenValidTime = 1000 * 60 * 60 * 24 * 7L; // 1주
 
     //AccessToken 생성
@@ -94,7 +94,7 @@ public class TokenProvider {
     //Token으로부터 snsId 추출
     public String getsnsIdFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(JWT_SECRET_KEY)
+                .setSigningKey(Base64Utils.encodeToString(JWT_SECRET_KEY.getBytes()))
                 .build().parseClaimsJws(token)
                 .getBody()
                 .get("snsId",
