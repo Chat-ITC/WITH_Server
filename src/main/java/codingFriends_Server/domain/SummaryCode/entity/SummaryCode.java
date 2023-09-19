@@ -34,5 +34,5 @@ public class SummaryCode {
     private String fav_language;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 }
