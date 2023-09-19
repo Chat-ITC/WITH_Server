@@ -45,7 +45,7 @@ public class SummaryCodeController {
             log.info("멀티 파트 파일");
             log.info(question);
             log.info(fav_language);
-            log.info(fav_language);
+            log.info(memberPrincipal.getMember().getSnsId());
 
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
