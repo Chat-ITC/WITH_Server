@@ -17,13 +17,21 @@ public class SummaryCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 500, nullable = false)
+    private String title;
+
     @Column(length = 2000, nullable = false)
     private String content;
+
     @Enumerated(EnumType.STRING)
     private ScrapStatus scrapStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(nullable = false)
+    private String fav_language;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

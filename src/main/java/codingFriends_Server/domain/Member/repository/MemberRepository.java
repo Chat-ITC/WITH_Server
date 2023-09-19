@@ -1,6 +1,7 @@
 package codingFriends_Server.domain.Member.repository;
 
 import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
