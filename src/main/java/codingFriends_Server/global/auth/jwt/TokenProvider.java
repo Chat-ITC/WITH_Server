@@ -58,7 +58,7 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS256, Base64Utils.encodeToString(JWT_SECRET_KEY.getBytes()))
                 .compact();
     }
-
+//    ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException;
     //AccessToken 유효성 검사
     public Boolean validateAccessToken(String token) {
         try {
@@ -67,6 +67,10 @@ public class TokenProvider {
                     .build()
                     .parseClaimsJws(token).getBody();
             return true;
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 만료 됐습니다.");
+        } catch (UnsupportedJwtException e) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "토큰을 지원 안합니다.");
         } catch (Exception e) {
             return false;
         }
