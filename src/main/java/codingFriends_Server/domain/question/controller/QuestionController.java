@@ -42,7 +42,7 @@ public class QuestionController {
     }
 
     @GetMapping("/question/get/{id}")
-    public ResponseEntity<?> getQuestionFromTitle(
+    public ResponseEntity<QuestionResponseDto> getQuestionFromTitle(
             @PathVariable Long id) {
         QuestionResponseDto questionResponseDto = questionService.getQuestionFromTitle(id);
         return ResponseEntity.ok()
@@ -50,7 +50,7 @@ public class QuestionController {
     }
 
     @PatchMapping("/question/update/{id}")
-    public ResponseEntity<?> updateQuestion(
+    public ResponseEntity<String> updateQuestion(
             @PathVariable Long id,
             @RequestBody QuestionUpdateRequestDto questionUpdateRequestDto) {
         questionService.updateQuestion(id, questionUpdateRequestDto);
@@ -59,7 +59,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/question/delete/{id}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
+    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
         return ResponseEntity.ok()
                 .body("question 삭제 완료");

@@ -4,6 +4,7 @@ import codingFriends_Server.domain.Member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -23,4 +24,7 @@ public class SummeryCode {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 }

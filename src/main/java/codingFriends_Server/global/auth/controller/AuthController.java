@@ -42,7 +42,7 @@ public class AuthController {
      //OAuth는 회원가입과 로그인이 동일해서 추가 회원가입만 고려하면 됨
 
     @RequestMapping(value = "/naver/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 네이버 로그인
-    public ResponseEntity<?> naverLogin(@RequestParam String code, @RequestParam String state) throws IOException {
+    public ResponseEntity<SignupResponseDto> naverLogin(@RequestParam String code, @RequestParam String state) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = naverLoginBO.getAccessToken(code, state);
         OauthResponseDto responseDto = naverLoginBO.getUserProfile(oAuth2AccessToken);
@@ -66,7 +66,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/kakao/callback", method = {RequestMethod.GET, RequestMethod.POST}) // 카카오 로그인
-    public ResponseEntity<?> kakaoLogin(@RequestParam String code) throws IOException {
+    public ResponseEntity<SignupResponseDto> kakaoLogin(@RequestParam String code) throws IOException {
         OAuth2AccessToken oAuth2AccessToken;
         oAuth2AccessToken = kakaoLoginBO.getAccessToken(code);
         OauthResponseDto responseDto = kakaoLoginBO.getUserProfile(oAuth2AccessToken);
@@ -99,7 +99,7 @@ public class AuthController {
     @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
     @PreAuthorize("permitAll()")
     //jwt 로직에서 제외하기
-    public ResponseEntity<?> makeAccessTokenFromRefreshToken(
+    public ResponseEntity<String> makeAccessTokenFromRefreshToken(
             @RequestHeader("refreshToken")String refreshToken) {
         if (refreshToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "refreshToken이 존재하지 않습니다.");

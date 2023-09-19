@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class SummeryCodeController {
 
 
     @PostMapping("/ai/summery")
-    public ResponseEntity<?> summeryCode(
+    public ResponseEntity<String> summeryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language,
@@ -56,7 +57,7 @@ public class SummeryCodeController {
     }
 
     @PostMapping("/ai/summery/like")
-    public ResponseEntity<?> saveSummeryCode(@RequestBody String chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    public ResponseEntity<String> saveSummeryCode(@RequestBody String chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
         }
