@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.SummeryCode.entity;
+package codingFriends_Server.domain.SummaryCode.entity;
 
 public enum ScrapStatus { // 스크랩 여부를 구분하는 enum 클래스
     Yes("Yes"), No("No");

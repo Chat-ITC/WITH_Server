@@ -1,6 +1,6 @@
-package codingFriends_Server.domain.SummeryCode.controller;
+package codingFriends_Server.domain.SummaryCode.controller;
 
-import codingFriends_Server.domain.SummeryCode.service.SummeryService;
+import codingFriends_Server.domain.SummaryCode.service.SummaryService;
 import codingFriends_Server.domain.ai.chatGpt.service.ChatGptService;
 import codingFriends_Server.domain.ai.ocr.service.OCRGeneralService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
@@ -17,22 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
-public class SummeryCodeController {
+public class SummaryCodeController {
     private final OCRGeneralService ocrGeneralService;
     private final ChatGptService chatGptService;
-    private final SummeryService summeryService;
+    private final SummaryService summaryService;
     @Value("${spring.ocr.url}")
     String apiURL;
     @Value("${spring.ocr.key}")
     String secretKey;
 
 
-    @PostMapping("/ai/summery")
-    public ResponseEntity<String> summeryCode(
+    @PostMapping("/ai/summary")
+    public ResponseEntity<String> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language,
@@ -47,7 +46,7 @@ public class SummeryCodeController {
             }
 
             String chat_result = chatGptService.askQuestion(ocr_result,question,fav_language);
-            summeryService.saveSummeryCode(chat_result, memberPrincipal.getMember());
+            summaryService.saveSummaryCode(chat_result, memberPrincipal.getMember());
             return ResponseEntity.ok()
                     .body(chat_result);
 
@@ -56,12 +55,12 @@ public class SummeryCodeController {
         }
     }
 
-    @PostMapping("/ai/summery/like")
-    public ResponseEntity<String> saveSummeryCode(@RequestBody String chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    @PostMapping("/ai/summary/like")
+    public ResponseEntity<String> saveSummaryCode(@RequestBody String chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
         }
-        summeryService.save_likeSummeryCode(chat_result, memberPrincipal.getMember());
+        summaryService.save_likeSummaryCode(chat_result, memberPrincipal.getMember());
         return ResponseEntity.ok()
                 .body("좋아요를 누른 글을 성공적으로 저장했습니다.");
     }

@@ -1,12 +1,11 @@
 package codingFriends_Server.domain.Member.entity;
 
-import codingFriends_Server.domain.SummeryCode.entity.SummeryCode;
+import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private LoginProvider loginProvider;
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<SummeryCode> summeryCodeList = new ArrayList<>();
+    private List<SummaryCode> summaryCodeList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
