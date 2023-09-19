@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class SummaryService {
-    private SummaryCodeRepository summaryCodeRepository;
+    private final SummaryCodeRepository summaryCodeRepository;
 
     @Transactional
     public void saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
