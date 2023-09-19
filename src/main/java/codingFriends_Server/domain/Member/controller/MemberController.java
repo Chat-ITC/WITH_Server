@@ -29,7 +29,7 @@ public class MemberController {
 
 
     @PatchMapping("/member/update/level") // member skill 수정
-    public ResponseEntity<?> updateMemberSkill(
+    public ResponseEntity<MemberInfoResponseDto> updateMemberSkill(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             @RequestBody MemberlevelUpdateRequestDto memberlevelUpdateRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
@@ -39,7 +39,7 @@ public class MemberController {
     }
 
     @PatchMapping("/member/update/language") // member language 수정
-    public ResponseEntity<?> updateMemberLanguage(
+    public ResponseEntity<MemberInfoResponseDto> updateMemberLanguage(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
             @RequestBody MemberFavLanguageRequestDto memberFavLanguageRequestDto) {
         String snsId = memberPrincipal.getMember().getSnsId();
@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/update") //member 정보 조회
-    public ResponseEntity<?> getMemberInfo(
+    public ResponseEntity<MemberInfoResponseDto> getMemberInfo(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(memberPrincipal.getMember());
         return ResponseEntity.ok()
@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     @PostMapping("member/logout")
-    public ResponseEntity<?> logoutMember(@RequestHeader("refreshToken") String refreshToken,
+    public ResponseEntity<String> logoutMember(@RequestHeader("refreshToken") String refreshToken,
                                           @RequestHeader("accessToken") String accessToken) {
         log.info("member/logout");
         log.info(accessToken);

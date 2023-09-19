@@ -13,14 +13,14 @@ public class LanguageController {
     private final LanguageService languageService;
 
     @PostMapping("/language/save")
-    public ResponseEntity<?> saveLanguage(@RequestParam("type") String type) {
+    public ResponseEntity<String> saveLanguage(@RequestParam("type") String type) {
         String result = languageService.save(type);
         return ResponseEntity.ok()
                 .body(result);
     }
 
     @PatchMapping("/language/update/{id}")
-    public ResponseEntity<?> updateLanguage(
+    public ResponseEntity<String> updateLanguage(
             @PathVariable Long id,
             @RequestParam("type") String type) {
         languageService.updateLanguage(id, type);
@@ -28,7 +28,7 @@ public class LanguageController {
                 .body("Language 수정 완료");
     }
     @DeleteMapping("/language/delete/{id}")
-    public ResponseEntity<?> deleteLanguage(
+    public ResponseEntity<String> deleteLanguage(
             @PathVariable Long id) {
 
         languageService.deleteLanguage(id);

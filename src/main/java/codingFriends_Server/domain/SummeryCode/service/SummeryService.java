@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class SummeryService {
@@ -24,6 +26,7 @@ public class SummeryService {
                 .content(chat_result)
                 .member(member)
                 .scrapStatus(ScrapStatus.No)
+                .createdAt(LocalDateTime.now())
                 .build();
         summeryCodeRepository.save(summeryCode);
     }
@@ -34,6 +37,7 @@ public class SummeryService {
                 .content(chat_result)
                 .member(member)
                 .scrapStatus(ScrapStatus.Yes)
+                .createdAt(LocalDateTime.now())
                 .build();
         summeryCodeRepository.save(summeryCode);
     }
