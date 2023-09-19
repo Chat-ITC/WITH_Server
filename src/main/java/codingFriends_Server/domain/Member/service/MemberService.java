@@ -38,7 +38,7 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-    @Transactional
+    @Transactional // member의 실력을 변경
     public MemberInfoResponseDto updateMemberLevel(String snsId, MemberlevelUpdateRequestDto memberlevelUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 
@@ -49,7 +49,7 @@ public class MemberService implements UserDetailsService {
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
         return memberInfoResponseDto;
     }
-    @Transactional
+    @Transactional // member의 선호 언어를 변경
     public MemberInfoResponseDto updateMemberLanguage(String snsId, MemberFavLanguageRequestDto memberUpdateRequestDto) {
         Member member = memberRepository.findBySnsId(snsId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "member를 찾을 수 없습니다."));
 

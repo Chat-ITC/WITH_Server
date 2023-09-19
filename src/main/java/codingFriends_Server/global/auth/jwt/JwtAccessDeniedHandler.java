@@ -11,7 +11,8 @@ import java.io.IOException;
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
-    //인증에 실패했을 때 실행된다. ex) ROLE_ADMIN 권한이 있는 곳에 ROLE_USER가 접근하면 실행됨
+    //접근이 거부된 경우(인가 실패) 호출되는 핸들러
+    //권한이 없을 때 호출된다.
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN);

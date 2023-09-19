@@ -16,7 +16,7 @@ public class LanguageService {
 
     private final LanguageRepository languageRepository;
 
-    public String save(String type) {
+    public String save(String type) { // language 저장
         checkLanguageNameDuplication(type);
         Language language = Language.builder()
                 .type(type)
@@ -25,14 +25,14 @@ public class LanguageService {
         return type;
     }
 
-    public void updateLanguage(Long id, String type) {
+    public void updateLanguage(Long id, String type) { // language 수정
         checkLanguageNameDuplication(type);
         Language language = languageRepository.findLanguageById(id).orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "language를 찾을 수 없습니다."));
 
         language.setType(type);
         languageRepository.save(language);
     }
-    private void checkLanguageNameDuplication(String type) {
+    private void checkLanguageNameDuplication(String type) { // language 중복 방지
         Optional<Language> language_op = languageRepository.findLanguageByType(type);
         if (language_op.isPresent()) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "이미 존재하는 type명입니다.");

@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findQuestionByTitle(String title);
-
     Optional<Question> findQuestionById(Long id);
 }

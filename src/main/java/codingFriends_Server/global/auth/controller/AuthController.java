@@ -82,7 +82,6 @@ public class AuthController {
         String refreshToken = tokenProvider.createRefreshToken(signupResponseDto.getSnsId());
 
         authService.saveRefreshToken(refreshToken, signupResponseDto.getSnsId());
-        log.info(authService.getsnsIdFromRefreshToken(refreshToken));
 
         return ResponseEntity.ok()
                 .header("refreshToken",refreshToken)
@@ -106,18 +105,11 @@ public class AuthController {
         }
 
         String snsId = authService.getsnsIdFromRefreshToken(refreshToken);
-        log.info("snsId 값");
-        log.info(snsId);
         authService.deleteRefreshToken(refreshToken);
-        log.info("삭제 성공");
         String new_accessToken = tokenProvider.createAccessToken(snsId);
-        log.info("accessToken 생성 성공");
         String new_refreshToken = tokenProvider.createRefreshToken(snsId);
-        log.info("refreshToken 생성 성공");
 
         authService.saveRefreshToken(refreshToken, snsId);
-        log.info("저장 성공");
-
 
         return ResponseEntity.ok()
                 .header("refreshToken", new_refreshToken)

@@ -27,7 +27,6 @@ public class MemberController {
         return "hello";
     }
 
-
     @PatchMapping("/member/update/level") // member skill 수정
     public ResponseEntity<MemberInfoResponseDto> updateMemberSkill(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
@@ -56,12 +55,9 @@ public class MemberController {
                 .body(memberInfoResponseDto);
     }
 
-    @PostMapping("member/logout")
+    @PostMapping("member/logout") //로그아웃
     public ResponseEntity<String> logoutMember(@RequestHeader("refreshToken") String refreshToken,
                                           @RequestHeader("accessToken") String accessToken) {
-        log.info("member/logout");
-        log.info(accessToken);
-        log.info(refreshToken);
         if (accessToken == null || refreshToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "accessToken이 없습니다.");
         }

@@ -18,7 +18,7 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @PostMapping("/question/save")
+    @PostMapping("/question/save") // 질문을 DB에 저장
     public ResponseEntity<QuestionRequestDto> saveQuestion(
             @RequestParam("type") String type,
             @RequestBody QuestionRequestDto questionRequestDto) {
@@ -28,10 +28,10 @@ public class QuestionController {
                 .body(questionRequestDto);
     }
 
-    @GetMapping("/question/get/language")
+    @GetMapping("/question/get/language") // language를 이용해서 Question을 조회 *Question -> Language (many to one)
     public ResponseEntity<?> getQuestionTitleFromLanguage(
             @RequestParam("type") String type) {
-        List<QuestionTitleResponseDto> questionList = questionService.findQuestionByLanguage(type);
+        List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type);
 
         if (questionList.isEmpty()) {
             return ResponseEntity.ok()
@@ -41,7 +41,7 @@ public class QuestionController {
                 .body(questionList);
     }
 
-    @GetMapping("/question/get/{id}")
+    @GetMapping("/question/get/{id}") // id로 question 조회
     public ResponseEntity<QuestionResponseDto> getQuestionFromTitle(
             @PathVariable Long id) {
         QuestionResponseDto questionResponseDto = questionService.getQuestionFromTitle(id);
@@ -49,7 +49,7 @@ public class QuestionController {
                 .body(questionResponseDto);
     }
 
-    @PatchMapping("/question/update/{id}")
+    @PatchMapping("/question/update/{id}") // id로 question 수정
     public ResponseEntity<String> updateQuestion(
             @PathVariable Long id,
             @RequestBody QuestionUpdateRequestDto questionUpdateRequestDto) {
@@ -58,7 +58,7 @@ public class QuestionController {
                 .body("question 수정 완료");
     }
 
-    @DeleteMapping("/question/delete/{id}")
+    @DeleteMapping("/question/delete/{id}") // id로 question 삭제
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
         return ResponseEntity.ok()
