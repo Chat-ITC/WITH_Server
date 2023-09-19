@@ -49,7 +49,7 @@ public class SummaryService {
         log.info("-----------------------------------------------");
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
-                .member(member)
+//                .member(member)
                 .scrapStatus(ScrapStatus.No)
                 .createdAt(LocalDateTime.now().toString())
                 .fav_language(member.getSkill_language())
