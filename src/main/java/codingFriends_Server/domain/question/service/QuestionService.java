@@ -49,8 +49,8 @@ public class QuestionService {
         return questionTitleResponseDtos;
     }
 
-    public QuestionResponseDto getQuestionFromTitle(String title) {
-        Question question = questionRepository.findQuestionByTitle(title).orElseThrow(
+    public QuestionResponseDto getQuestionFromTitle(Long id) {
+        Question question = questionRepository.findQuestionById(id).orElseThrow(
                 () -> new CustomException(HttpStatus.BAD_REQUEST, "question이 존재하지 않습니다."));
         QuestionResponseDto questionResponseDto = new QuestionResponseDto(question);
         return questionResponseDto;

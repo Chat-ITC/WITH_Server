@@ -23,10 +23,6 @@ public class QuestionController {
             @RequestParam("type") String type,
             @RequestBody QuestionRequestDto questionRequestDto) {
 
-        if (type == null) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "type 문자열이 존재하지 않습니다.");
-        }
-
         questionService.saveQuestion(questionRequestDto, type);
         return ResponseEntity.ok()
                 .body(questionRequestDto);
@@ -45,25 +41,25 @@ public class QuestionController {
                 .body(questionList);
     }
 
-    @GetMapping("/question/get")
+    @GetMapping("/question/get/{id}")
     public ResponseEntity<?> getQuestionFromTitle(
-            @RequestParam("title") String title) {
-        QuestionResponseDto questionResponseDto = questionService.getQuestionFromTitle(title);
+            @PathVariable Long id) {
+        QuestionResponseDto questionResponseDto = questionService.getQuestionFromTitle(id);
         return ResponseEntity.ok()
                 .body(questionResponseDto);
     }
 
-    @PatchMapping("/question/update")
+    @PatchMapping("/question/update/{id}")
     public ResponseEntity<?> updateQuestion(
-            @RequestParam("id") Long id,
+            @PathVariable Long id,
             @RequestBody QuestionUpdateRequestDto questionUpdateRequestDto) {
         questionService.updateQuestion(id, questionUpdateRequestDto);
         return ResponseEntity.ok()
                 .body("question 수정 완료");
     }
 
-    @DeleteMapping("/question/delete")
-    public ResponseEntity<?> deleteQuestion(@RequestParam("id") Long id) {
+    @DeleteMapping("/question/delete/{id}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
         return ResponseEntity.ok()
                 .body("question 삭제 완료");
