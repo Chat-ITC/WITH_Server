@@ -19,17 +19,17 @@ public class LanguageController {
                 .body(result);
     }
 
-    @PatchMapping("/language/update")
+    @PatchMapping("/language/update/{id}")
     public ResponseEntity<?> updateLanguage(
-            @RequestParam("id") Long id,
+            @PathVariable Long id,
             @RequestParam("type") String type) {
         languageService.updateLanguage(id, type);
         return ResponseEntity.ok()
                 .body("Language 수정 완료");
     }
-    @DeleteMapping("/language/delete")
+    @DeleteMapping("/language/delete/{id}")
     public ResponseEntity<?> deleteLanguage(
-            @RequestParam("id") Long id) {
+            @PathVariable Long id) {
 
         languageService.deleteLanguage(id);
         return ResponseEntity.ok()
