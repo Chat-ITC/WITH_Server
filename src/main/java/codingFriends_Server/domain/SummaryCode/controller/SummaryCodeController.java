@@ -50,18 +50,22 @@ public class SummaryCodeController {
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
             String ocr_result = ocrGeneralService.processImage(apiURL, secretKey, file.getPath());
+            log.info("OCR 결과");
+            log.info(ocr_result);
             if (ocr_result == null) {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
-
             SummaryCodeTitleContentResponseDto responseDto =
                     chatGptService.askQuestion(ocr_result,question, fav_language,memberPrincipal.getMember());
-
+            log.info("60번째 줄");
+            log.info(responseDto.toString());
             summaryService.saveSummaryCode(responseDto, memberPrincipal.getMember());
             return ResponseEntity.ok()
                     .body(responseDto);
 
         } catch (Exception e) {
+            log.info("에러 발생");
+            log.info(e.toString());
             throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
