@@ -9,6 +9,7 @@ import codingFriends_Server.domain.ai.ocr.service.OCRGeneralService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SummaryCodeController {
     private final OCRGeneralService ocrGeneralService;
     private final ChatGptService chatGptService;
@@ -39,6 +41,12 @@ public class SummaryCodeController {
             @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
         try {
+            log.info(multipartFile.toString());
+            log.info("멀티 파트 파일");
+            log.info(question);
+            log.info(fav_language);
+            log.info(fav_language);
+
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
             String ocr_result = ocrGeneralService.processImage(apiURL, secretKey, file.getPath());
