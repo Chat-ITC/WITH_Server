@@ -42,7 +42,7 @@ public class Member implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // 관리자가 없으므로 ROLE_USER로 설정
         return authorities;
     }
 
@@ -55,7 +55,7 @@ public class Member implements UserDetails {
     @Override
     public String getUsername() {
         return snsId;
-    }
+    } // MemberPrincipal에서 getUsername을 사용하는데 snsId 값이 필요해서 임시로 설정
 
     @Override
     public boolean isAccountNonExpired() {
