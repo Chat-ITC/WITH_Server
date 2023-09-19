@@ -8,12 +8,14 @@ import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.auth.service.AuthService;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -57,7 +59,10 @@ public class MemberController {
     @PostMapping("member/logout")
     public ResponseEntity<?> logoutMember(@RequestHeader("refreshToken") String refreshToken,
                                           @RequestHeader("accessToken") String accessToken) {
-        if (accessToken == null) {
+        log.info("member/logout");
+        log.info(accessToken);
+        log.info(refreshToken);
+        if (accessToken == null || refreshToken == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "accessToken이 없습니다.");
         }
         authService.setAccessTokenBlackList(accessToken);
