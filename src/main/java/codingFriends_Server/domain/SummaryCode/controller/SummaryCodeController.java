@@ -1,5 +1,8 @@
 package codingFriends_Server.domain.SummaryCode.controller;
 
+import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeResponseDto;
+import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.domain.SummaryCode.service.SummaryService;
 import codingFriends_Server.domain.ai.chatGpt.service.ChatGptService;
 import codingFriends_Server.domain.ai.ocr.service.OCRGeneralService;
@@ -10,13 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class SummaryCodeController {
 
 
     @PostMapping("/ai/summary")
-    public ResponseEntity<String> summaryCode(
+    public ResponseEntity<SummaryCodeTitleContentResponseDto> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language,
@@ -45,10 +46,12 @@ public class SummaryCodeController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
 
-            String chat_result = chatGptService.askQuestion(ocr_result,question,fav_language);
-            summaryService.saveSummaryCode(chat_result, memberPrincipal.getMember());
+            SummaryCodeTitleContentResponseDto responseDto =
+                    chatGptService.askQuestion(ocr_result,question, fav_language,memberPrincipal.getMember());
+
+            summaryService.saveSummaryCode(responseDto, memberPrincipal.getMember());
             return ResponseEntity.ok()
-                    .body(chat_result);
+                    .body(responseDto);
 
         } catch (Exception e) {
             throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -56,12 +59,35 @@ public class SummaryCodeController {
     }
 
     @PostMapping("/ai/summary/like")
-    public ResponseEntity<String> saveSummaryCode(@RequestBody String chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    public ResponseEntity<String> saveSummaryCode(@RequestBody SummaryCodeTitleContentResponseDto chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
         }
         summaryService.save_likeSummaryCode(chat_result, memberPrincipal.getMember());
         return ResponseEntity.ok()
                 .body("좋아요를 누른 글을 성공적으로 저장했습니다.");
+    }
+
+    @GetMapping("/ai/summary/home")
+    public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
+        if (summaryCodeResponseDtoList.isEmpty()) {
+            return ResponseEntity.ok()
+                    .body("요약한 글이 없습니다.");
+        }
+        return ResponseEntity.ok()
+                .body(summaryCodeResponseDtoList);
+    }
+
+    @GetMapping("/ai/summary/home/scrap")
+    public ResponseEntity<?> getScrapContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getScrapSummaryContents(memberPrincipal.getMember());
+
+        if (summaryCodeResponseDtoList.isEmpty()) {
+            return ResponseEntity.ok()
+                    .body("요약한 글이 없습니다.");
+        }
+        return ResponseEntity.ok()
+                .body(summaryCodeResponseDtoList);
     }
 }

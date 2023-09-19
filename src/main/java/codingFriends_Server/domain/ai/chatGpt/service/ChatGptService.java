@@ -1,5 +1,9 @@
 package codingFriends_Server.domain.ai.chatGpt.service;
 
+import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.SummaryCode.entity.ScrapStatus;
+import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import codingFriends_Server.domain.ai.chatGpt.dto.request.ChatGptRequestDto;
 import codingFriends_Server.domain.ai.chatGpt.dto.response.ChatGptChoiceResponseDto;
@@ -13,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +43,19 @@ public class ChatGptService {
     }
 
     @Async
-    public String askQuestion(String ocr_result, String question, String fav_language) {
-        String prompt = "분야는 " + fav_language + " 입니다. 만약 '상관없음'이면 코딩 언어에 국한되지 않고 내용에 맞게 대답해줘"
-                + "다음 내용을 " + question + " 만약 '선택없음'이라면 내용 요약해줘 " + ocr_result;
+    public SummaryCodeTitleContentResponseDto askQuestion(String ocr_result, String question, String fav_language, Member member) {
+        String prompt_question = "분야는 " + fav_language + " 입니다. 분야가 만약 '상관없음'이라면 코딩 언어에 국한되지 않고 내용에 맞게 대답해주세요"
+                + "이제 다음 내용을 " + question + "이때 만약 '선택없음'이라면 내용을 요약해줘 \n" +  ocr_result ;
+        String messageTexts = askQuestion_gpt(prompt_question);
 
+        String prompt_title = "다음 내용을 간단하게 한 줄로 요약해줘" + messageTexts;
+        String messageText_title = askQuestion_gpt(prompt_title);
+
+        SummaryCodeTitleContentResponseDto summaryCode = new SummaryCodeTitleContentResponseDto(messageTexts, messageText_title);
+        return summaryCode;
+    }
+
+    public String askQuestion_gpt(String prompt){
         ChatGptRequestDto chatGptRequestDto = new ChatGptRequestDto(model, prompt);
         RestTemplate restTemplate = new RestTemplate();
         ChatGptResponseDto response = restTemplate.postForObject(apiUrl, getHttpEntity(chatGptRequestDto), ChatGptResponseDto.class);
@@ -51,6 +65,7 @@ public class ChatGptService {
         List<String> messageTexts = choiceList.stream().map(ChatGptChoiceResponseDto::getMessage)
                 .map(Message::getContent)
                 .collect(Collectors.toList());
+
         return String.join("\n", messageTexts);
     }
 }
