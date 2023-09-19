@@ -66,6 +66,7 @@ public class SummaryCodeController {
         } catch (Exception e) {
             log.error("에러 발생: " + e.getMessage()); // 에러 메시지 출력
             log.error("스택 트레이스: ", e); // 스택 트레이스 출력
+
             throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
