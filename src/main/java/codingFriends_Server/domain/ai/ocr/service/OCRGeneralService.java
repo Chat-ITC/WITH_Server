@@ -1,5 +1,6 @@
 package codingFriends_Server.domain.ai.ocr.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class OCRGeneralService {
 
     public String processImage(String apiURL, String secretKey, String imageFile) throws IOException {
+        log.info("1");
         URL url = new URL(apiURL);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -29,6 +32,7 @@ public class OCRGeneralService {
 
         con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
         con.setRequestProperty("X-OCR-SECRET", secretKey);
+        log.info("2");
 
         JSONObject json = new JSONObject();
         json.put("version", "V2");
@@ -55,6 +59,7 @@ public class OCRGeneralService {
         File file = new File(imageFile);
 
         writeMultiPart(wr, postParams, file, boundary);
+        log.info("3");
 
         wr.close();
 
@@ -74,8 +79,10 @@ public class OCRGeneralService {
         while ((inputLine = br.readLine()) != null) {
             responseBuffer.append(inputLine);
         }
+        log.info("4");
 
         br.close();
+        log.info(responseBuffer.toString());
 
         return extractInferText(responseBuffer.toString()).toString();
     }
