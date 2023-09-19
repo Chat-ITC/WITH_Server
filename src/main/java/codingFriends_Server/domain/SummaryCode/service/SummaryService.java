@@ -34,11 +34,19 @@ public class SummaryService {
         log.info(chat_result.getTitle());
         log.info("------");
         log.info(member.getSkill_language());
-
+        log.info("123123123");
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
         }
         log.info("저장 성공");
+        log.info("-----------------------------------------------");
+        log.info(chat_result.getContent());
+        log.info(member.toString());
+        log.info(ScrapStatus.No.toString());
+        log.info(LocalDateTime.now().toString());
+        log.info(member.getSkill_language());
+        log.info(chat_result.getTitle());
+        log.info("-----------------------------------------------");
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
                 .member(member)
