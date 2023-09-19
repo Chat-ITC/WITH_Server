@@ -37,15 +37,13 @@ public class SummaryCodeController {
     public ResponseEntity<SummaryCodeTitleContentResponseDto> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
-            @RequestParam("fav_language")String fav_language,
-            @AuthenticationPrincipal MemberPrincipal memberPrincipal
+            @RequestParam("fav_language")String fav_language
     ) {
         try {
             log.info(multipartFile.toString());
             log.info("멀티 파트 파일");
             log.info(question);
             log.info(fav_language);
-            log.info(memberPrincipal.getMember().getSnsId());
 
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
@@ -56,10 +54,10 @@ public class SummaryCodeController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
             SummaryCodeTitleContentResponseDto responseDto =
-                    chatGptService.askQuestion(ocr_result,question, fav_language,memberPrincipal.getMember());
+                    chatGptService.askQuestion(ocr_result,question, fav_language);
             log.info("60번째 줄");
             log.info(responseDto.toString());
-            summaryService.saveSummaryCode(responseDto, memberPrincipal.getMember());
+            summaryService.saveSummaryCode(responseDto, fav_language);
             return ResponseEntity.ok()
                     .body(responseDto);
 
@@ -67,7 +65,7 @@ public class SummaryCodeController {
             log.error("에러 발생: " + e.getMessage()); // 에러 메시지 출력
             log.error("스택 트레이스: ", e); // 스택 트레이스 출력
 
-            throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new CustomException(HttpStatus.NOT_FOUND, e.getMessage());
         }
 
     }
@@ -81,27 +79,27 @@ public class SummaryCodeController {
         return ResponseEntity.ok()
                 .body("좋아요를 누른 글을 성공적으로 저장했습니다.");
     }
-
-    @GetMapping("/ai/summary/home")
-    public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
-        if (summaryCodeResponseDtoList.isEmpty()) {
-            return ResponseEntity.ok()
-                    .body("요약한 글이 없습니다.");
-        }
-        return ResponseEntity.ok()
-                .body(summaryCodeResponseDtoList);
-    }
-
-    @GetMapping("/ai/summary/home/scrap")
-    public ResponseEntity<?> getScrapContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getScrapSummaryContents(memberPrincipal.getMember());
-
-        if (summaryCodeResponseDtoList.isEmpty()) {
-            return ResponseEntity.ok()
-                    .body("요약한 글이 없습니다.");
-        }
-        return ResponseEntity.ok()
-                .body(summaryCodeResponseDtoList);
-    }
+//    @GetMapping("/ai/summary/home")
+//    public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
+//        if (summaryCodeResponseDtoList.isEmpty()) {
+//            return ResponseEntity.ok()
+//                    .body("요약한 글이 없습니다.");
+//        }
+//        return ResponseEntity.ok()
+//                .body(summaryCodeResponseDtoList);
+//    }
+//
+//    @GetMapping("/ai/summary/home/scrap")
+//    public ResponseEntity<?> getScrapContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getScrapSummaryContents(memberPrincipal.getMember());
+//
+//        if (summaryCodeResponseDtoList.isEmpty()) {
+//            return ResponseEntity.ok()
+//                    .body("요약한 글이 없습니다.");
+//        }
+//        return ResponseEntity.ok()
+//                .body(summaryCodeResponseDtoList);
+//    }
+//
 }
