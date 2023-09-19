@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface SummaryCodeRepository extends JpaRepository<SummaryCode, Long> {
-    List<SummaryCode> findSummaryCodesByMemberOrderByCreatedAtDesc(Member member);
-    List<SummaryCode> findSummaryCodesByMemberAndScrapStatusOrderByCreatedAtDesc(Member member, ScrapStatus scrapStatus);
+//    List<SummaryCode> findSummaryCodesByMemberOrderByCreatedAtDesc(Member member);
+//    List<SummaryCode> findSummaryCodesByMemberAndScrapStatusOrderByCreatedAtDesc(Member member, ScrapStatus scrapStatus);
 
 
 }

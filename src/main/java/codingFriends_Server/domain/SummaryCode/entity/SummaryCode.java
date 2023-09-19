@@ -26,9 +26,9 @@ public class SummaryCode {
     @Enumerated(EnumType.STRING)
     private ScrapStatus scrapStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
 
     @Column(nullable = false)
     private String fav_language;

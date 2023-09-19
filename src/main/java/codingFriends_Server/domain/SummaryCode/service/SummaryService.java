@@ -1,8 +1,6 @@
 package codingFriends_Server.domain.SummaryCode.service;
 
 import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.Member.repository.MemberRepository;
-import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeResponseDto;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.SummaryCode.entity.ScrapStatus;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
@@ -24,7 +22,7 @@ import java.util.stream.Collectors;
 public class SummaryService {
     private final SummaryCodeRepository summaryCodeRepository;
 
-    public void saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
+    public void saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, String fav_language) {
         log.info("save 로직");
         log.info(chat_result.toString());
         log.info("mem");
@@ -32,7 +30,6 @@ public class SummaryService {
         log.info("---");
         log.info(chat_result.getTitle());
         log.info("------");
-        log.info(member.getSkill_language());
         log.info("123123123");
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
@@ -40,19 +37,16 @@ public class SummaryService {
         log.info("저장 성공");
         log.info("-----------------------------------------------");
         log.info(chat_result.getContent());
-        log.info(member.toString());
         log.info(ScrapStatus.No.toString());
         log.info(LocalDateTime.now().toString());
-        log.info(member.getSkill_language());
         log.info(chat_result.getTitle());
         log.info("-----------------------------------------------");
 
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
-                .member(member)
                 .scrapStatus(ScrapStatus.No)
                 .createdAt(LocalDateTime.now().toString())
-                .fav_language(member.getSkill_language())
+                .fav_language(fav_language)
                 .title(chat_result.getTitle())
                 .build();
         log.info("마지막");
@@ -64,7 +58,6 @@ public class SummaryService {
     public void save_likeSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
-                .member(member)
                 .fav_language(member.getSkill_language())
                 .scrapStatus(ScrapStatus.Yes)
                 .createdAt(LocalDateTime.now().toString())
@@ -73,20 +66,20 @@ public class SummaryService {
         summaryCodeRepository.save(summaryCode);
     }
 
-    public List<SummaryCodeResponseDto> getSummaryCodeByMember(Member member) {
-        List<SummaryCode> summaryCodeList = summaryCodeRepository.findSummaryCodesByMemberOrderByCreatedAtDesc(member);
-        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryCodeList.stream()
-                .map(SummaryCodeResponseDto::new)
-                .collect(Collectors.toList());
-        return summaryCodeResponseDtoList;
-    }
-
-    public List<SummaryCodeResponseDto> getScrapSummaryContents(Member member) {
-        List<SummaryCode> summaryCodes = summaryCodeRepository.
-                findSummaryCodesByMemberAndScrapStatusOrderByCreatedAtDesc(member, ScrapStatus.Yes);
-        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryCodes.stream()
-                .map(SummaryCodeResponseDto::new)
-                .collect(Collectors.toList());
-        return summaryCodeResponseDtoList;
-    }
+//    public List<SummaryCodeResponseDto> getSummaryCodeByMember(Member member) {
+//        List<SummaryCode> summaryCodeList = summaryCodeRepository.findSummaryCodesByMemberOrderByCreatedAtDesc(member);
+//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryCodeList.stream()
+//                .map(SummaryCodeResponseDto::new)
+//                .collect(Collectors.toList());
+//        return summaryCodeResponseDtoList;
+//    }
+//
+//    public List<SummaryCodeResponseDto> getScrapSummaryContents(Member member) {
+//        List<SummaryCode> summaryCodes = summaryCodeRepository.
+//                findSummaryCodesByMemberAndScrapStatusOrderByCreatedAtDesc(member, ScrapStatus.Yes);
+//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryCodes.stream()
+//                .map(SummaryCodeResponseDto::new)
+//                .collect(Collectors.toList());
+//        return summaryCodeResponseDtoList;
+//    }
 }
