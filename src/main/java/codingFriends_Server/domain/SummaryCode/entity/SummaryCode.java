@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.SummeryCode.entity;
+package codingFriends_Server.domain.SummaryCode.entity;
 
 import codingFriends_Server.domain.Member.entity.Member;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SummeryCode {
+public class SummaryCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
