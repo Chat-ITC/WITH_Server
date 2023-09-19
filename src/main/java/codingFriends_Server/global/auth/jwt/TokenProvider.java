@@ -59,9 +59,7 @@ public class TokenProvider {
                 .compact();
     }
 
-    //    ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException;
     //AccessToken 유효성 검사
-//AccessToken 유효성 검사
     public Boolean validateAccessToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -96,7 +94,7 @@ public class TokenProvider {
     //Token으로부터 snsId 추출
     public String getsnsIdFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(Base64Utils.encodeToString(JWT_SECRET_KEY.getBytes()))
+                .setSigningKey(JWT_SECRET_KEY)
                 .build().parseClaimsJws(token)
                 .getBody()
                 .get("snsId",
