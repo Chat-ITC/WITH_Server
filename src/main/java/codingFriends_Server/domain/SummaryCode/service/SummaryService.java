@@ -51,7 +51,7 @@ public class SummaryService {
                 .content(chat_result.getContent())
                 .member(member)
                 .scrapStatus(ScrapStatus.No)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().toString())
                 .fav_language(member.getSkill_language())
                 .title(chat_result.getTitle())
                 .build();
@@ -66,7 +66,7 @@ public class SummaryService {
                 .member(member)
                 .fav_language(member.getSkill_language())
                 .scrapStatus(ScrapStatus.Yes)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().toString())
                 .title(chat_result.getTitle())
                 .build();
         summaryCodeRepository.save(summaryCode);

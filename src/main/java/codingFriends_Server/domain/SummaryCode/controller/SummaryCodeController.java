@@ -65,8 +65,9 @@ public class SummaryCodeController {
 
         } catch (Exception e) {
             log.info("에러 발생");
-            log.info(e.toString());
-            throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
+            log.info(e.getStackTrace().toString());
+            log.info("로그 스택");
+            throw new CustomException(HttpStatus.BAD_REQUEST, e.getStackTrace().toString());
         }
     }
 
