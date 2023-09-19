@@ -58,8 +58,10 @@ public class TokenProvider {
                 .signWith(SignatureAlgorithm.HS256, Base64Utils.encodeToString(JWT_SECRET_KEY.getBytes()))
                 .compact();
     }
-//    ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException;
+
+    //    ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException;
     //AccessToken 유효성 검사
+//AccessToken 유효성 검사
     public Boolean validateAccessToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -72,9 +74,11 @@ public class TokenProvider {
         } catch (UnsupportedJwtException e) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "토큰을 지원 안합니다.");
         } catch (Exception e) {
-            return false;
+            // 여기에서 예외 메시지를 설정해야 합니다.
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "토큰 검증 중에 오류가 발생했습니다.");
         }
     }
+
 
     //User의 정보를 가져온다.
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
