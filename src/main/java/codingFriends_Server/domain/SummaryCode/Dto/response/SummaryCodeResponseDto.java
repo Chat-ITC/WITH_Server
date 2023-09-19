@@ -14,7 +14,7 @@ public class SummaryCodeResponseDto {
     private String title;
     private String content;
     private String fav_language;
-    private LocalDateTime createAt;
+    private String createAt;
 
     public SummaryCodeResponseDto(SummaryCode summaryCode) {
         this.title = summaryCode.getTitle();
