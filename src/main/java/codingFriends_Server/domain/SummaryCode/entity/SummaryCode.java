@@ -17,7 +17,7 @@ public class SummaryCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 1500, nullable = false)
     private String title;
 
     @Column(length = 2000, nullable = false)
