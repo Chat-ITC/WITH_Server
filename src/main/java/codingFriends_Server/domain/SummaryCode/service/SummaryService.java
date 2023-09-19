@@ -18,13 +18,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class SummaryService {
     private final SummaryCodeRepository summaryCodeRepository;
 
-    @Transactional
     public void saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
         log.info("save 로직");
         log.info(chat_result.toString());
@@ -47,15 +46,17 @@ public class SummaryService {
         log.info(member.getSkill_language());
         log.info(chat_result.getTitle());
         log.info("-----------------------------------------------");
+
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
-//                .member(member)
+                .member(member)
                 .scrapStatus(ScrapStatus.No)
                 .createdAt(LocalDateTime.now().toString())
                 .fav_language(member.getSkill_language())
                 .title(chat_result.getTitle())
                 .build();
         log.info("마지막");
+
         summaryCodeRepository.save(summaryCode);
     }
 
