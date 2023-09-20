@@ -90,7 +90,15 @@ public class SummaryService {
                 .fav_language(fav_language)
                 .title(chat_result.getTitle())
                 .build();
-
+        log.info("summary 객체 만든 이후, ");
+        log.info("-----------------------------------------------");
+        log.info(summaryCode.getContent());
+//        log.info(member.toString());
+        log.info(summaryCode.getCreatedAt());
+        log.info(summaryCode.getFav_language());
+//        log.info(member.getSkill_language());
+        log.info(summaryCode.getTitle());
+        log.info("-----------------------------------------------");
         log.info("마지막");
         log.info(summaryCodeRepository.toString());
         summaryCodeRepository.save(summaryCode);
