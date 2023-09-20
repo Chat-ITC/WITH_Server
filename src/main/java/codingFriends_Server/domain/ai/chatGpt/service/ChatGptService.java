@@ -43,8 +43,8 @@ public class ChatGptService {
 
     @Async
     public SummaryCodeTitleContentResponseDto askQuestion(String ocr_result, String question, String fav_language, Member member) {
-        String prompt_question = "분야는 " + fav_language + " 입니다. 분야가 만약 '상관없음'이라면 코딩 언어에 국한되지 않고 내용에 맞게 대답해주세요"
-                + "이제 다음 내용을 " + question + "이때 만약 '선택없음'이라면 내용을 요약해줘 \n" +  ocr_result ;
+        String prompt_question = "분야는 " + fav_language + " 입니다. 분야가 만약 '없음'이라면 코딩 언어에 국한되지 않고 내용에 맞게 대답해주세요"
+                + "이제 다음 내용을 " + question + "이때 만약 '상관없음'이거나 질문에 대답하기 어렵다면 내용을 요약해줘. \n" +  ocr_result ;
         String messageTexts = askQuestion_gpt(prompt_question);
 
         String prompt_title = "다음 내용을 간단하게 한 줄로 요약해줘" + messageTexts;
