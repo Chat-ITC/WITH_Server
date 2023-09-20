@@ -19,6 +19,12 @@ public class SignupRequestDto { // 추가 회원가입을 할 때 받는 정보
     @NotBlank
     private String skill_language;
 
+    //초기 환경설정용 정보
+    private String title;
+    private String content;
+    private String fav_language;
+    private String isScrapped;
+
     public Member of() {
         return Member.builder()
                 .snsId(snsId)
