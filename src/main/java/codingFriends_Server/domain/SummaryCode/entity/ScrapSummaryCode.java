@@ -1,18 +1,20 @@
 package codingFriends_Server.domain.SummaryCode.entity;
 
 import codingFriends_Server.domain.Member.entity.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class SummaryCode {
+public class ScrapSummaryCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

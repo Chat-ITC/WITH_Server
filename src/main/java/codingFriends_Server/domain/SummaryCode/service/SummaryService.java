@@ -1,10 +1,12 @@
 package codingFriends_Server.domain.SummaryCode.service;
 
 import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeMainResponseDto;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeResponseDto;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
-import codingFriends_Server.domain.SummaryCode.entity.ScrapStatus;
+import codingFriends_Server.domain.SummaryCode.entity.ScrapSummaryCode;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.SummaryCode.repository.ScrapSummaryCodeRepository;
 import codingFriends_Server.domain.SummaryCode.repository.SummaryCodeRepository;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,100 +25,53 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SummaryService {
     private final SummaryCodeRepository summaryCodeRepository;
-
-    public void saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
-        log.info("save 로직");
-        log.info(chat_result.toString());
-        log.info("mem");
-        log.info(chat_result.getContent());
-        log.info("---");
-        log.info(chat_result.getTitle());
-        log.info("------");
-        log.info(member.getSkill_language());
-        log.info("123123123");
+    private final ScrapSummaryCodeRepository scrapSummaryCodeRepository;
+    @Transactional
+    public SummaryCodeMainResponseDto saveSummaryCode(SummaryCodeTitleContentResponseDto chat_result, String fav_language, Member member) {
         if (chat_result == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
         }
-        log.info("저장 성공");
-        log.info("-----------------------------------------------");
-        log.info(chat_result.getContent());
-        log.info(member.toString());
-        log.info(ScrapStatus.No.toString());
-        log.info(LocalDateTime.now().toString());
-        log.info(member.getSkill_language());
-        log.info(chat_result.getTitle());
-        log.info("-----------------------------------------------");
-
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
                 .member(member)
-                .scrapStatus(ScrapStatus.No)
-                .createdAt(LocalDateTime.now().toString())
-                .fav_language(member.getSkill_language())
-                .title(chat_result.getTitle())
-                .build();
-
-        log.info("마지막");
-        log.info(summaryCodeRepository.toString());
-        summaryCodeRepository.save(summaryCode);
-    }
-    public void saveSummaryCodewithoutMember(SummaryCodeTitleContentResponseDto chat_result, String fav_language, Member member) {
-        log.info("save 로직");
-        log.info(chat_result.toString());
-        log.info("mem");
-        log.info(chat_result.getContent());
-        log.info("---");
-        log.info(chat_result.getTitle());
-        log.info("------");
-//        log.info(member.getSkill_language());
-        log.info("123123123");
-        if (chat_result == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
-        }
-        log.info("저장 성공");
-        log.info("-----------------------------------------------");
-        log.info(chat_result.getContent());
-//        log.info(member.toString());
-        log.info(ScrapStatus.No.toString());
-        log.info(LocalDateTime.now().toString());
-//        log.info(member.getSkill_language());
-        log.info(chat_result.getTitle());
-        log.info("-----------------------------------------------");
-
-        SummaryCode summaryCode = SummaryCode.builder()
-                .content(chat_result.getContent())
-                .member(member)
-                .scrapStatus(ScrapStatus.No)
-                .createdAt(LocalDateTime.now().toString())
+                .createdAt(LocalDateTime.now())
                 .fav_language(fav_language)
                 .title(chat_result.getTitle())
                 .build();
-        log.info("summary 객체 만든 이후, ");
-        log.info("-----------------------------------------------");
-        log.info(summaryCode.getContent());
-//        log.info(member.toString());
-        log.info(summaryCode.getCreatedAt());
-        log.info(summaryCode.getFav_language());
-//        log.info(member.getSkill_language());
-        log.info(summaryCode.getTitle());
-        log.info("-----------------------------------------------");
-        log.info("마지막");
-        log.info(summaryCodeRepository.toString());
         summaryCodeRepository.save(summaryCode);
+
+        SummaryCodeMainResponseDto summaryCodeMainResponseDto = new SummaryCodeMainResponseDto(summaryCode);
+        return summaryCodeMainResponseDto;
     }
 
-
     @Transactional
-    public void save_likeSummaryCode(SummaryCodeTitleContentResponseDto chat_result, Member member) {
-        SummaryCode summaryCode = SummaryCode.builder()
-                .content(chat_result.getContent())
-                .member(member)
-                .fav_language(member.getSkill_language())
-                .scrapStatus(ScrapStatus.Yes)
-                .createdAt(LocalDateTime.now().toString())
-                .title(chat_result.getTitle())
-                .build();
-        summaryCodeRepository.save(summaryCode);
+    public void save_likeSummaryCode(Long id) {
+        SummaryCode summaryCode = summaryCodeRepository.findSummaryCodeById(id).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, "id값에 맞는 summaryCode가 존재하지 않습니다."));
+
+        if (delete_scrapSummaryCode(summaryCode.getCreatedAt())) {// scrap을 한번 더 누르면 DB에 존재하는지 확인한 뒤, 삭제하고 return false
+            //true면 현재 DB에 존재를 안 하는 것.
+            ScrapSummaryCode scrapSummaryCode = ScrapSummaryCode.builder()
+                    .fav_language(summaryCode.getFav_language())
+                    .member(summaryCode.getMember())
+                    .title(summaryCode.getTitle())
+                    .content(summaryCode.getContent())
+                    .createdAt(summaryCode.getCreatedAt())
+                    .build();
+
+            scrapSummaryCodeRepository.save(scrapSummaryCode);
+        }
+    }
+
+    private boolean delete_scrapSummaryCode(LocalDateTime localDateTime) {
+        // localDateTime은 밀리초까지 나옴. 그래서 동일한 값이 없다고 판단 하에 검증 필드로 사용
+        Optional<ScrapSummaryCode> scrapSummaryCode = scrapSummaryCodeRepository.findScrapSummaryCodeByCreatedAt(localDateTime);
+        if (scrapSummaryCode.isPresent()) {
+            scrapSummaryCodeRepository.delete(scrapSummaryCode.get());
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public List<SummaryCodeResponseDto> getSummaryCodeByMember(Member member) {
@@ -127,9 +83,9 @@ public class SummaryService {
     }
 
     public List<SummaryCodeResponseDto> getScrapSummaryContents(Member member) {
-        List<SummaryCode> summaryCodes = summaryCodeRepository.
-                findSummaryCodesByMemberAndScrapStatusOrderByCreatedAtDesc(member, ScrapStatus.Yes);
-        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryCodes.stream()
+
+        List<ScrapSummaryCode> scrapSummaryCodes = scrapSummaryCodeRepository.findScrapSummaryCodesByMemberOrderByCreatedAtDesc(member);
+        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = scrapSummaryCodes.stream()
                 .map(SummaryCodeResponseDto::new)
                 .collect(Collectors.toList());
         return summaryCodeResponseDtoList;
