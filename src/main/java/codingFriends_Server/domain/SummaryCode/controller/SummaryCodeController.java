@@ -37,15 +37,15 @@ public class SummaryCodeController {
     public ResponseEntity<SummaryCodeTitleContentResponseDto> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
-            @RequestParam("fav_language")String fav_language
-//            @AuthenticationPrincipal MemberPrincipal memberPrincipal
+            @RequestParam("fav_language")String fav_language,
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
         try {
             log.info(multipartFile.toString());
             log.info("멀티 파트 파일");
             log.info(question);
             log.info(fav_language);
-//            log.info(memberPrincipal.getMember().getSnsId());
+            log.info(memberPrincipal.getMember().getSnsId());
 
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
@@ -59,7 +59,7 @@ public class SummaryCodeController {
                     chatGptService.askQuestionwithoutMember(ocr_result,question, fav_language);
             log.info("60번째 줄");
             log.info(responseDto.toString());
-            summaryService.saveSummaryCodewithoutMember(responseDto, fav_language);
+            summaryService.saveSummaryCodewithoutMember(responseDto, fav_language, memberPrincipal.getMember());
             return ResponseEntity.ok()
                     .body(responseDto);
 
