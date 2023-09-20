@@ -1,5 +1,6 @@
 package codingFriends_Server.domain.SummaryCode.controller;
 
+import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeMainResponseDto;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeResponseDto;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
@@ -34,74 +35,65 @@ public class SummaryCodeController {
 
 
     @PostMapping("/ai/summary")
-    public ResponseEntity<SummaryCodeTitleContentResponseDto> summaryCode(
+    public ResponseEntity<SummaryCodeMainResponseDto> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
         try {
-            log.info(multipartFile.toString());
-            log.info("멀티 파트 파일");
-            log.info(question);
-            log.info(fav_language);
-            log.info(memberPrincipal.getMember().getSnsId());
-
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
             String ocr_result = ocrGeneralService.processImage(apiURL, secretKey, file.getPath());
-            log.info("OCR 결과");
-            log.info(ocr_result);
+
             if (ocr_result == null) {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
             SummaryCodeTitleContentResponseDto responseDto =
-                    chatGptService.askQuestionwithoutMember(ocr_result,question, fav_language);
-            log.info("60번째 줄");
-            log.info(responseDto.toString());
-            summaryService.saveSummaryCodewithoutMember(responseDto, fav_language, memberPrincipal.getMember());
+                    chatGptService.askQuestion(ocr_result,question, fav_language, memberPrincipal.getMember());
+
+            SummaryCodeMainResponseDto summaryCodeMainResponseDto =
+                    summaryService.saveSummaryCode(responseDto, fav_language, memberPrincipal.getMember());
+
             return ResponseEntity.ok()
-                    .body(responseDto);
+                    .body(summaryCodeMainResponseDto);
 
         } catch (Exception e) {
             log.error("에러 발생: " + e.getMessage()); // 에러 메시지 출력
             log.error("스택 트레이스: ", e); // 스택 트레이스 출력
-
             throw new CustomException(HttpStatus.NOT_FOUND, e.getMessage());
         }
 
     }
 
     @PostMapping("/ai/summary/like")
-    public ResponseEntity<String> saveSummaryCode(@RequestBody SummaryCodeTitleContentResponseDto chat_result, @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        if (chat_result == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "글이 없습니다.");
-        }
-        summaryService.save_likeSummaryCode(chat_result, memberPrincipal.getMember());
+    public ResponseEntity<String> saveSummaryCode(@RequestParam Long id) {
+
+        summaryService.save_likeSummaryCode(id);
         return ResponseEntity.ok()
                 .body("좋아요를 누른 글을 성공적으로 저장했습니다.");
     }
-//    @GetMapping("/ai/summary/home")
-//    public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
-//        if (summaryCodeResponseDtoList.isEmpty()) {
-//            return ResponseEntity.ok()
-//                    .body("요약한 글이 없습니다.");
-//        }
-//        return ResponseEntity.ok()
-//                .body(summaryCodeResponseDtoList);
-//    }
-//
-//    @GetMapping("/ai/summary/home/scrap")
-//    public ResponseEntity<?> getScrapContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-//        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getScrapSummaryContents(memberPrincipal.getMember());
-//
-//        if (summaryCodeResponseDtoList.isEmpty()) {
-//            return ResponseEntity.ok()
-//                    .body("요약한 글이 없습니다.");
-//        }
-//        return ResponseEntity.ok()
-//                .body(summaryCodeResponseDtoList);
-//    }
-//
+    @GetMapping("/ai/summary/home")
+    public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
+        if (summaryCodeResponseDtoList.isEmpty()) {
+            return ResponseEntity.ok()
+                    .body("요약한 글이 없습니다.");
+        }
+        return ResponseEntity.ok()
+                .body(summaryCodeResponseDtoList);
+    }
+
+    @GetMapping("/ai/summary/home/scrap")
+    public ResponseEntity<?> getScrapContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getScrapSummaryContents(memberPrincipal.getMember());
+
+        if (summaryCodeResponseDtoList.isEmpty()) {
+            return ResponseEntity.ok()
+                    .body("요약한 글이 없습니다.");
+        }
+        return ResponseEntity.ok()
+                .body(summaryCodeResponseDtoList);
+    }
+
 }

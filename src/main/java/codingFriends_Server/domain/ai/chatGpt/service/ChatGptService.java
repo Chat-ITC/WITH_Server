@@ -2,7 +2,6 @@ package codingFriends_Server.domain.ai.chatGpt.service;
 
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
-import codingFriends_Server.domain.SummaryCode.entity.ScrapStatus;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import codingFriends_Server.domain.ai.chatGpt.dto.request.ChatGptRequestDto;
@@ -44,18 +43,6 @@ public class ChatGptService {
 
     @Async
     public SummaryCodeTitleContentResponseDto askQuestion(String ocr_result, String question, String fav_language, Member member) {
-        String prompt_question = "분야는 " + fav_language + " 입니다. 분야가 만약 '상관없음'이라면 코딩 언어에 국한되지 않고 내용에 맞게 대답해주세요"
-                + "이제 다음 내용을 " + question + "이때 만약 '선택없음'이라면 내용을 요약해줘 \n" +  ocr_result ;
-        String messageTexts = askQuestion_gpt(prompt_question);
-
-        String prompt_title = "다음 내용을 간단하게 한 줄로 요약해줘" + messageTexts;
-        String messageText_title = askQuestion_gpt(prompt_title);
-
-        SummaryCodeTitleContentResponseDto summaryCode = new SummaryCodeTitleContentResponseDto(messageTexts, messageText_title);
-        return summaryCode;
-    }
-    @Async
-    public SummaryCodeTitleContentResponseDto askQuestionwithoutMember(String ocr_result, String question, String fav_language) {
         String prompt_question = "분야는 " + fav_language + " 입니다. 분야가 만약 '상관없음'이라면 코딩 언어에 국한되지 않고 내용에 맞게 대답해주세요"
                 + "이제 다음 내용을 " + question + "이때 만약 '선택없음'이라면 내용을 요약해줘 \n" +  ocr_result ;
         String messageTexts = askQuestion_gpt(prompt_question);

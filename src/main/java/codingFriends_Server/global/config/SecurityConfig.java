@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 // permitAll -> 인증과 인가를 거치지 않고 모든 사용자에게 접근 권한을 부여한다.
-                .antMatchers("/kakao/callback", "/naver/callback", "/member/signup","/hello","/member/refreshToken", "/language/**", "/question/**","/ai/**").permitAll()
+                .antMatchers("/kakao/callback", "/naver/callback", "/member/signup","/hello","/member/refreshToken", "/language/**", "/question/**").permitAll()
                 //permitAll로 적용된 URL 이외의 모든 요청은 인증된 사용자만이 접근할 수 있게 설정됩니다.
                 .anyRequest().authenticated();
         /*
