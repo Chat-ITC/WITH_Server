@@ -59,7 +59,7 @@ public class SummaryService {
         log.info(summaryCodeRepository.toString());
         summaryCodeRepository.save(summaryCode);
     }
-    public void saveSummaryCodewithoutMember(SummaryCodeTitleContentResponseDto chat_result, String fav_language) {
+    public void saveSummaryCodewithoutMember(SummaryCodeTitleContentResponseDto chat_result, String fav_language, Member member) {
         log.info("save 로직");
         log.info(chat_result.toString());
         log.info("mem");
@@ -84,7 +84,7 @@ public class SummaryService {
 
         SummaryCode summaryCode = SummaryCode.builder()
                 .content(chat_result.getContent())
-//                .member(member)
+                .member(member)
                 .scrapStatus(ScrapStatus.No)
                 .createdAt(LocalDateTime.now().toString())
                 .fav_language(fav_language)
