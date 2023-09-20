@@ -35,7 +35,7 @@ public class SummaryCodeController {
 
 
     @PostMapping("/ai/summary")
-    public ResponseEntity<SummaryCodeMainResponseDto> summaryCode(
+    public ResponseEntity<?> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language,
@@ -45,9 +45,10 @@ public class SummaryCodeController {
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
             String ocr_result = ocrGeneralService.processImage(apiURL, secretKey, file.getPath());
-
+            log.info(ocr_result);
             if (ocr_result == null) {
-                throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
+                return ResponseEntity.ok()
+                        .body("사진에서 추출된 글자가 없습니다.");
             }
             SummaryCodeTitleContentResponseDto responseDto =
                     chatGptService.askQuestion(ocr_result,question, fav_language, memberPrincipal.getMember());

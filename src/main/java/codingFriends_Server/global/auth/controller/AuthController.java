@@ -51,7 +51,6 @@ public class AuthController {
         Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .header("validation","no")
                     .body(signupResponseDto);
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());
@@ -75,7 +74,6 @@ public class AuthController {
         Optional<Member> memberOptional = memberService.findMemberBySnsId(responseDto.getSnsId()); // DB에 Member가 존재하지 않으면 추가회원가입 진행함
         if (memberOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .header("validation","no")
                     .body(signupResponseDto);
         }
         String accessToken = tokenProvider.createAccessToken(signupResponseDto.getSnsId());

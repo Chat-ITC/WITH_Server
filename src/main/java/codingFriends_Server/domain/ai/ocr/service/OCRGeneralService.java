@@ -17,7 +17,6 @@ import java.util.UUID;
 public class OCRGeneralService {
 
     public String processImage(String apiURL, String secretKey, String imageFile) throws IOException {
-        log.info("1");
         URL url = new URL(apiURL);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -32,7 +31,6 @@ public class OCRGeneralService {
 
         con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
         con.setRequestProperty("X-OCR-SECRET", secretKey);
-        log.info("2");
 
         JSONObject json = new JSONObject();
         json.put("version", "V2");
@@ -59,7 +57,6 @@ public class OCRGeneralService {
         File file = new File(imageFile);
 
         writeMultiPart(wr, postParams, file, boundary);
-        log.info("3");
 
         wr.close();
 
