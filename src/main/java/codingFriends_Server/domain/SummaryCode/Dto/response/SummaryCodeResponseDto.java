@@ -17,6 +17,7 @@ public class SummaryCodeResponseDto {
     private String content;
     private String fav_language;
     private LocalDateTime createAt;
+    private String isScrapped;
 
     public SummaryCodeResponseDto(SummaryCode summaryCode) {
         this.id = summaryCode.getId();
@@ -24,6 +25,7 @@ public class SummaryCodeResponseDto {
         this.content = summaryCode.getContent();
         this.fav_language = summaryCode.getFav_language();
         this.createAt = summaryCode.getCreatedAt();
+        this.isScrapped = summaryCode.getIsScrapped();
     }
 
     public SummaryCodeResponseDto(ScrapSummaryCode scrapSummaryCode) {

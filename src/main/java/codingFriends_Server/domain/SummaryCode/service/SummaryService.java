@@ -37,6 +37,7 @@ public class SummaryService {
                 .createdAt(LocalDateTime.now())
                 .fav_language(fav_language)
                 .title(chat_result.getTitle())
+                .isScrapped("NO")
                 .build();
         summaryCodeRepository.save(summaryCode);
 
@@ -49,25 +50,30 @@ public class SummaryService {
         SummaryCode summaryCode = summaryCodeRepository.findSummaryCodeById(id).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, "id값에 맞는 summaryCode가 존재하지 않습니다."));
 
-        if (delete_scrapSummaryCode(summaryCode.getCreatedAt())) {// scrap을 한번 더 누르면 DB에 존재하는지 확인한 뒤, 삭제하고 return false
-            //true면 현재 DB에 존재를 안 하는 것.
-            ScrapSummaryCode scrapSummaryCode = ScrapSummaryCode.builder()
+        if (delete_scrapSummaryCode(summaryCode.getCreatedAt(),summaryCode)) {// scrap을 한번 더 누르면 DB에 존재하는지 확인한 뒤, 삭제하고 return false
+
+            ScrapSummaryCode scrapSummaryCode = ScrapSummaryCode.builder() // scrapSummaryCodeRepository에 저장
                     .fav_language(summaryCode.getFav_language())
                     .member(summaryCode.getMember())
                     .title(summaryCode.getTitle())
                     .content(summaryCode.getContent())
                     .createdAt(summaryCode.getCreatedAt())
                     .build();
-
             scrapSummaryCodeRepository.save(scrapSummaryCode);
+
+            summaryCode.setIsScrapped("YES"); // summaryCode 객체에서 스크랩 여부를 YES로 변경
+            summaryCodeRepository.save(summaryCode);
         }
     }
 
-    private boolean delete_scrapSummaryCode(LocalDateTime localDateTime) {
+    private boolean delete_scrapSummaryCode(LocalDateTime localDateTime, SummaryCode summaryCode) {
         // localDateTime은 밀리초까지 나옴. 그래서 동일한 값이 없다고 판단 하에 검증 필드로 사용
         Optional<ScrapSummaryCode> scrapSummaryCode = scrapSummaryCodeRepository.findScrapSummaryCodeByCreatedAt(localDateTime);
         if (scrapSummaryCode.isPresent()) {
             scrapSummaryCodeRepository.delete(scrapSummaryCode.get());
+
+            summaryCode.setIsScrapped("NO"); // summaryCode 객체에서 스크랩 여부를 NO로 변경
+            summaryCodeRepository.save(summaryCode);
             return false;
         } else {
             return true;
