@@ -8,6 +8,7 @@ import codingFriends_Server.domain.SummaryCode.entity.ScrapSummaryCode;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.domain.SummaryCode.repository.ScrapSummaryCodeRepository;
 import codingFriends_Server.domain.SummaryCode.repository.SummaryCodeRepository;
+import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,20 @@ public class SummaryService {
 
         SummaryCodeMainResponseDto summaryCodeMainResponseDto = new SummaryCodeMainResponseDto(summaryCode);
         return summaryCodeMainResponseDto;
+    }
+
+    @Transactional
+    public void saveSummaryInitCode(SignupRequestDto signupRequestDto, Member member) {
+        SummaryCode summaryCode = SummaryCode.builder()
+                .title(signupRequestDto.getTitle())
+                .content(signupRequestDto.getContent())
+                .member(member)
+                .fav_language(signupRequestDto.getFav_language())
+                .createdAt(LocalDateTime.now())
+                .isScrapped("No")
+                .build();
+        summaryCodeRepository.save(summaryCode);
+
     }
 
     @Transactional

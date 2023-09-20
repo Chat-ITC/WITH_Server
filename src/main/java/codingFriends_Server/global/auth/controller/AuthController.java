@@ -2,6 +2,7 @@ package codingFriends_Server.global.auth.controller;
 
 import codingFriends_Server.domain.Member.entity.Member;
 import codingFriends_Server.domain.Member.service.MemberService;
+import codingFriends_Server.domain.SummaryCode.service.SummaryService;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.auth.dto.response.OauthResponseDto;
 import codingFriends_Server.global.auth.dto.response.SignupResponseDto;
@@ -37,6 +38,7 @@ public class AuthController {
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
     private final AuthService authService;
+    private final SummaryService summaryService;
 
 
      //OAuth는 회원가입과 로그인이 동일해서 추가 회원가입만 고려하면 됨
@@ -91,13 +93,14 @@ public class AuthController {
 
     @PostMapping("/member/signup") // 추가 회원가입
     ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        memberService.signup(signupRequestDto);
+
+        Member member = memberService.signup(signupRequestDto);
+        summaryService.saveSummaryInitCode(signupRequestDto, member);
+
         return ResponseEntity.ok()
                 .body("추가 회원가입 성공");
     }
     @PostMapping("/member/refreshToken") // AccessToken & RefreshToken 재발급
-    @PreAuthorize("permitAll()")
-    //jwt 로직에서 제외하기
     public ResponseEntity<String> makeAccessTokenFromRefreshToken(
             @RequestHeader("refreshToken")String refreshToken) {
         if (refreshToken == null) {
