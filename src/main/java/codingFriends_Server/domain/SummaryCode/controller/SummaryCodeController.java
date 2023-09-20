@@ -38,12 +38,14 @@ public class SummaryCodeController {
             @RequestParam("imageFile") MultipartFile multipartFile,
             @RequestParam("question")String question,
             @RequestParam("fav_language")String fav_language
+//            @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
         try {
             log.info(multipartFile.toString());
             log.info("멀티 파트 파일");
             log.info(question);
             log.info(fav_language);
+//            log.info(memberPrincipal.getMember().getSnsId());
 
             File file = File.createTempFile("temp", null);
             multipartFile.transferTo(file);
@@ -54,10 +56,10 @@ public class SummaryCodeController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "response가 비어있습니다.");
             }
             SummaryCodeTitleContentResponseDto responseDto =
-                    chatGptService.askQuestion(ocr_result,question, fav_language);
+                    chatGptService.askQuestionwithoutMember(ocr_result,question, fav_language);
             log.info("60번째 줄");
             log.info(responseDto.toString());
-            summaryService.saveSummaryCode(responseDto, fav_language);
+            summaryService.saveSummaryCodewithoutMember(responseDto, fav_language);
             return ResponseEntity.ok()
                     .body(responseDto);
 

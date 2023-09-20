@@ -35,8 +35,8 @@ public class Member implements UserDetails {
     private String skill_language;
     @Enumerated(EnumType.STRING)
     private LoginProvider loginProvider;
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-//    private List<SummaryCode> summaryCodeList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<SummaryCode> summaryCodeList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
