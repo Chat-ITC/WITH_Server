@@ -44,10 +44,26 @@ public class QuestionService {
         Language language = languageRepository.findLanguageByType(type).orElseThrow(
                 () -> new CustomException(HttpStatus.BAD_REQUEST, "language가 존재하지 않습니다."));
 
+        String levelNumber;
+        switch (level) {
+            case "입문자":
+            case "초보자":
+                levelNumber = "하";
+                break;
+            case "중급자":
+                levelNumber = "중";
+                break;
+            default:
+                levelNumber = "상";
+                break;
+        }
         List<Question> userLevelQuestions = language.getQuestionList().stream()
-                .filter(question -> question.getLevel().equals(level))
+                .filter(question -> question.getLevel().equals(levelNumber))
                 .collect(Collectors.toList());
 
+        if (userLevelQuestions.isEmpty()) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "해당 레벨의 질문이 존재하지 않습니다.");
+        }
         Collections.shuffle(userLevelQuestions);
 
         // 무작위로 4개의 질문을 선택합니다.
@@ -56,6 +72,7 @@ public class QuestionService {
                 .map(QuestionTitleResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 
     public QuestionResponseDto getQuestionFromTitle(Long id) {
         Question question = questionRepository.findQuestionById(id).orElseThrow(

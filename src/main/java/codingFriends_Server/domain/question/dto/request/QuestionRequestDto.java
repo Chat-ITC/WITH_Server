@@ -12,4 +12,5 @@ public class QuestionRequestDto {
     private String title;
     private String content;
     private String answer;
+    private String level;
 }
