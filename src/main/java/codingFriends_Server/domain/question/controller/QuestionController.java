@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,10 +47,11 @@ public class QuestionController {
             return ResponseEntity.ok()
                     .body("question이 비어있습니다.");
         }
-        String encoded_level = URLEncoder.encode(level, "UTF-8");
+        Map<Object, Object> resultMap = new HashMap<>();
+        resultMap.put("quiz", questionList);
+        resultMap.put("level", level);
         return ResponseEntity.ok()
-                .header("level", encoded_level)
-                .body(questionList);
+                .body(resultMap);
     }
 
     @GetMapping("/question/get/{id}") // id로 question 조회
