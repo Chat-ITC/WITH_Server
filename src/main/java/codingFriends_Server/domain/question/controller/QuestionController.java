@@ -43,6 +43,7 @@ public class QuestionController {
                     .body("question이 비어있습니다.");
         }
         return ResponseEntity.ok()
+                .header("level", level)
                 .body(questionList);
     }
 
