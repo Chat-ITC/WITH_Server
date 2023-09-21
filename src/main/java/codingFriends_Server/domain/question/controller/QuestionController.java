@@ -5,10 +5,12 @@ import codingFriends_Server.domain.question.dto.request.QuestionUpdateRequestDto
 import codingFriends_Server.domain.question.dto.response.QuestionResponseDto;
 import codingFriends_Server.domain.question.dto.response.QuestionTitleResponseDto;
 import codingFriends_Server.domain.question.service.QuestionService;
+import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +32,10 @@ public class QuestionController {
 
     @GetMapping("/question/get/language") // language를 이용해서 Question을 조회 *Question -> Language (many to one)
     public ResponseEntity<?> getQuestionTitleFromLanguage(
-            @RequestParam("type") String type) {
-        List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type);
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        String type = memberPrincipal.getMember().getSkill_language();
+        String level = memberPrincipal.getMember().getUser_level();
+        List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type, level);
 
         if (questionList.isEmpty()) {
             return ResponseEntity.ok()

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,24 +40,21 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public List<QuestionTitleResponseDto> findRandomQuestionsByLanguage(String type) {
+    public List<QuestionTitleResponseDto> findRandomQuestionsByLanguage(String type, String level) {
         Language language = languageRepository.findLanguageByType(type).orElseThrow(
                 () -> new CustomException(HttpStatus.BAD_REQUEST, "language가 존재하지 않습니다."));
 
-        List<Question> questionList = language.getQuestionList();
+        List<Question> userLevelQuestions = language.getQuestionList().stream()
+                .filter(question -> question.getLevel().equals(level))
+                .collect(Collectors.toList());
 
-        Collections.shuffle(questionList);
+        Collections.shuffle(userLevelQuestions);
 
         // 무작위로 4개의 질문을 선택합니다.
-        List<Question> randomQuestions = questionList.stream()
+        return userLevelQuestions.stream()
                 .limit(4)
-                .collect(Collectors.toList());
-
-        List<QuestionTitleResponseDto> questionTitleResponseDtos = randomQuestions.stream()
                 .map(QuestionTitleResponseDto::new)
                 .collect(Collectors.toList());
-
-        return questionTitleResponseDtos;
     }
 
     public QuestionResponseDto getQuestionFromTitle(Long id) {
