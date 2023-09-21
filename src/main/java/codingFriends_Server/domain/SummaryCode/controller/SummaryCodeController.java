@@ -37,8 +37,8 @@ public class SummaryCodeController {
     @PostMapping("/ai/summary")
     public ResponseEntity<?> summaryCode(
             @RequestParam("imageFile") MultipartFile multipartFile,
-            @RequestParam("question")String question,
-            @RequestParam("fav_language")String fav_language,
+            @RequestParam("question") String question,
+            @RequestParam("fav_language") String fav_language,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
         try {
@@ -51,7 +51,7 @@ public class SummaryCodeController {
                         .body("사진에서 추출된 글자가 없습니다.");
             }
             SummaryCodeTitleContentResponseDto responseDto =
-                    chatGptService.askQuestion(ocr_result,question, fav_language, memberPrincipal.getMember());
+                    chatGptService.askQuestion(ocr_result, question, fav_language, memberPrincipal.getMember());
 
             SummaryCodeMainResponseDto summaryCodeMainResponseDto =
                     summaryService.saveSummaryCode(responseDto, fav_language, memberPrincipal.getMember());
@@ -74,6 +74,7 @@ public class SummaryCodeController {
         return ResponseEntity.ok()
                 .body("좋아요를 누른 글을 성공적으로 저장했습니다.");
     }
+
     @GetMapping("/ai/summary/home")
     public ResponseEntity<?> getSummaryContents(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         List<SummaryCodeResponseDto> summaryCodeResponseDtoList = summaryService.getSummaryCodeByMember(memberPrincipal.getMember());
@@ -97,4 +98,10 @@ public class SummaryCodeController {
                 .body(summaryCodeResponseDtoList);
     }
 
+    @DeleteMapping("/ai/summary/{id}")
+    public ResponseEntity<?> deleteSummaryCode(@PathVariable Long id) {
+        summaryService.deleteSummaryCode(id);
+        return ResponseEntity.ok()
+                .body("summaryCode 삭제 완료");
+    }
 }

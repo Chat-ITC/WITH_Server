@@ -111,4 +111,9 @@ public class SummaryService {
                 .collect(Collectors.toList());
         return summaryCodeResponseDtoList;
     }
+
+    public void deleteSummaryCode(Long id) {
+        SummaryCode summaryCode = summaryCodeRepository.findSummaryCodeById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "summaryCode를 찾을 수 없습니다."));
+        summaryCodeRepository.delete(summaryCode);
+    }
 }
