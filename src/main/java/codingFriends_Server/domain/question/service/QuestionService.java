@@ -36,6 +36,7 @@ public class QuestionService {
                 .content(questionRequestDto.getContent())
                 .answer(questionRequestDto.getAnswer())
                 .language(language)
+                .level(questionRequestDto.getLevel())
                 .build();
         questionRepository.save(question);
     }
