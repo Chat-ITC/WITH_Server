@@ -18,6 +18,8 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id")
     private Language language;
+    @Column(nullable = false)
+    private String level;
 
     @Column(length = 500, nullable = false)
     private String title;
