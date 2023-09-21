@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,7 @@ public class QuestionController {
 
     @GetMapping("/question/get/language") // language를 이용해서 Question을 조회 *Question -> Language (many to one)
     public ResponseEntity<?> getQuestionTitleFromLanguage(
-            @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal) throws UnsupportedEncodingException {
         String type = memberPrincipal.getMember().getSkill_language();
         String level = memberPrincipal.getMember().getUser_level();
 
@@ -42,8 +44,9 @@ public class QuestionController {
             return ResponseEntity.ok()
                     .body("question이 비어있습니다.");
         }
+        String encoded_level = URLEncoder.encode(level, "UTF-8");
         return ResponseEntity.ok()
-                .header("level", level)
+                .header("level", encoded_level)
                 .body(questionList);
     }
 
