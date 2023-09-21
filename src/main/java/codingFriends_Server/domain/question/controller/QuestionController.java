@@ -35,6 +35,7 @@ public class QuestionController {
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         String type = memberPrincipal.getMember().getSkill_language();
         String level = memberPrincipal.getMember().getUser_level();
+
         List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type, level);
 
         if (questionList.isEmpty()) {
