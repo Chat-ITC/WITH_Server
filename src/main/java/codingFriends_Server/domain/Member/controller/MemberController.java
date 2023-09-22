@@ -51,7 +51,7 @@ public class MemberController {
                 .body(memberInfoResponseDto);
     }
 
-    @PostMapping("member/logout") //로그아웃
+    @PostMapping("/member/logout") //로그아웃
     public ResponseEntity<String> logoutMember(@RequestHeader("refreshToken") String refreshToken,
                                           @RequestHeader("accessToken") String accessToken) {
         if (accessToken == null || refreshToken == null) {
@@ -61,5 +61,12 @@ public class MemberController {
         authService.deleteRefreshToken(refreshToken);
         return ResponseEntity.ok()
                 .body("로그아웃 성공");
+    }
+
+    @DeleteMapping("/member/delete/{id}")
+    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+        memberService.deleteMember(id);
+        return ResponseEntity.ok()
+                .body("memberDelete 완료");
     }
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySnsId(String snsId); // 유저의 고유한 값 (snsId)로 유저를 찾음
+
+    Optional<Member> findMemberById(Long id);
 }
