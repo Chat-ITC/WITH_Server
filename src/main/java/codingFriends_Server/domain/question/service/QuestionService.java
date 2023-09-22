@@ -41,6 +41,21 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
+    @Transactional
+    public void saveQuestionById(QuestionRequestDto questionRequestDto, Long id) {
+        Language language = languageRepository.findLanguageById(id).orElseThrow(
+                () -> new CustomException(HttpStatus.BAD_REQUEST, "language가 존재하지 않습니다."));
+
+        Question question = Question.builder()
+                .title(questionRequestDto.getTitle())
+                .content(questionRequestDto.getContent())
+                .answer(questionRequestDto.getAnswer())
+                .language(language)
+                .level(questionRequestDto.getLevel())
+                .build();
+        questionRepository.save(question);
+    }
+
     public List<QuestionTitleResponseDto> findRandomQuestionsByLanguage(String type, String level) {
         Language language = languageRepository.findLanguageByType(type).orElseThrow(
                 () -> new CustomException(HttpStatus.BAD_REQUEST, "language가 존재하지 않습니다."));
