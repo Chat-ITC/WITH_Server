@@ -59,4 +59,11 @@ public class MemberService implements UserDetailsService {
         MemberInfoResponseDto memberInfoResponseDto = new MemberInfoResponseDto(member);
         return memberInfoResponseDto;
     }
+
+    @Transactional
+    public void deleteMember(Long id) {
+        Member member = memberRepository.findMemberById(id).orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "member를 찾을 수 없습니다."));
+        memberRepository.delete(member);
+
+    }
 }
