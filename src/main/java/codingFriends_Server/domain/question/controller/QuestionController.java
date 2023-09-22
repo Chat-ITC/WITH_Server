@@ -35,6 +35,16 @@ public class QuestionController {
                 .body(questionRequestDto);
     }
 
+    @PostMapping("/question/save/id/{id}")
+    public ResponseEntity<QuestionRequestDto> saveQuestion(
+            @PathVariable Long id,
+            @RequestBody QuestionRequestDto questionRequestDto) {
+        questionService.saveQuestionById(questionRequestDto,id);
+
+        return ResponseEntity.ok()
+                .body(questionRequestDto);
+    }
+
     @GetMapping("/question/get/language") // language를 이용해서 Question을 조회 *Question -> Language (many to one)
     public ResponseEntity<?> getQuestionTitleFromLanguage(
             @AuthenticationPrincipal MemberPrincipal memberPrincipal) throws UnsupportedEncodingException {
