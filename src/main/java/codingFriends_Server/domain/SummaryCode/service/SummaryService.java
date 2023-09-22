@@ -113,7 +113,14 @@ public class SummaryService {
     }
 
     public void deleteSummaryCode(Long id) {
-        SummaryCode summaryCode = summaryCodeRepository.findSummaryCodeById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "summaryCode를 찾을 수 없습니다."));
+        SummaryCode summaryCode = summaryCodeRepository.findSummaryCodeById(id).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, "summaryCode를 찾을 수 없습니다."));
         summaryCodeRepository.delete(summaryCode);
+    }
+
+    public void deleteScrapSummaryCode(Long id) {
+        ScrapSummaryCode scrapSummaryCode = scrapSummaryCodeRepository.findScrapSummaryCodeById(id).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, "ScrapSummaryCode를 찾을 수 없습니다."));
+        scrapSummaryCodeRepository.delete(scrapSummaryCode);
     }
 }

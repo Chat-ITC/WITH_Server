@@ -104,4 +104,11 @@ public class SummaryCodeController {
         return ResponseEntity.ok()
                 .body("summaryCode 삭제 완료");
     }
+
+    @DeleteMapping("ai/summary/delete/scrap/{id}")
+    public ResponseEntity<?> deleteScrapSummaryCode(@PathVariable Long id) {
+        summaryService.deleteScrapSummaryCode(id);
+        return ResponseEntity.ok()
+                .body("ScrapSummaryCode 삭제 완료");
+    }
 }
