@@ -98,7 +98,7 @@ public class SummaryCodeController {
                 .body(summaryCodeResponseDtoList);
     }
 
-    @DeleteMapping("/ai/summary/{id}")
+    @DeleteMapping("/ai/summary/delete/{id}")
     public ResponseEntity<?> deleteSummaryCode(@PathVariable Long id) {
         summaryService.deleteSummaryCode(id);
         return ResponseEntity.ok()
