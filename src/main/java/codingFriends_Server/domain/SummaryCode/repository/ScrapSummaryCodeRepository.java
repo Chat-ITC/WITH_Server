@@ -12,4 +12,6 @@ public interface ScrapSummaryCodeRepository extends JpaRepository<ScrapSummaryCo
     Optional<ScrapSummaryCode> findScrapSummaryCodeByCreatedAt(LocalDateTime localDateTime);
 
     List<ScrapSummaryCode> findScrapSummaryCodesByMemberOrderByCreatedAtDesc(Member member);
+
+    Optional<ScrapSummaryCode> findScrapSummaryCodeById(Long id);
 }

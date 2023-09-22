@@ -1,5 +1,6 @@
 package codingFriends_Server.domain.Member.entity;
 
+import codingFriends_Server.domain.SummaryCode.entity.ScrapSummaryCode;
 import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.*;
@@ -38,6 +39,8 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<SummaryCode> summaryCodeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ScrapSummaryCode> scrapSummaryCodes = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
