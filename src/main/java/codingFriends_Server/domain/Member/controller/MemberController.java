@@ -22,10 +22,6 @@ public class MemberController {
     private final MemberService memberService;
     private final AuthService authService;
 
-    @GetMapping("/hello")
-    public String helloController() {
-        return "hello";
-    }
 
     @PatchMapping("/member/update/level") // member skill 수정
     public ResponseEntity<MemberInfoResponseDto> updateMemberSkill(
