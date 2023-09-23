@@ -54,6 +54,7 @@ public class QuestionController {
         Map<Object, Object> resultMap = new HashMap<>();
         if (type.equals("상관없음")) {
             resultMap.put("level", level);
+            resultMap.put("quiz", "");
             return ResponseEntity.ok()
                     .body(resultMap);
         }
