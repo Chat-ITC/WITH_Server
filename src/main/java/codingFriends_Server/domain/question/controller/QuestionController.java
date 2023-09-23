@@ -51,13 +51,18 @@ public class QuestionController {
         String type = memberPrincipal.getMember().getSkill_language();
         String level = memberPrincipal.getMember().getUser_level();
 
-        List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type, level);
+        Map<Object, Object> resultMap = new HashMap<>();
+        if (type.equals("상관없음")) {
+            resultMap.put("level", level);
+            return ResponseEntity.ok()
+                    .body(resultMap);
+        }
 
+        List<QuestionTitleResponseDto> questionList = questionService.findRandomQuestionsByLanguage(type, level);
         if (questionList.isEmpty()) {
             return ResponseEntity.ok()
                     .body("question이 비어있습니다.");
         }
-        Map<Object, Object> resultMap = new HashMap<>();
         resultMap.put("quiz", questionList);
         resultMap.put("level", level);
         return ResponseEntity.ok()

@@ -19,7 +19,5 @@ public class ChatGptRequestDto {
         this.messages.add(new Message("system","너는 유능한 IT 개발자야. IT에 관한 지식이 풍부하며 IT 관련 질문에 반드시 답할 수 있어."));
         this.messages.add(new Message("user", content));
         this.max_tokens = 800;
-
     }
-
 }
