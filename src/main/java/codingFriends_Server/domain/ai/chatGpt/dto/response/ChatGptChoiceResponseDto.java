@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatGptChoiceResponseDto {
-    private int index;
-    private Message message;
+	private int index;
+	private Message message;
 }

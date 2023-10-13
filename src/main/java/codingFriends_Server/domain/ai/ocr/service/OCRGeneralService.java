@@ -1,6 +1,7 @@
 package codingFriends_Server.domain.ai.ocr.service;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -25,117 +26,117 @@ public class OCRGeneralService {
         con.setDoOutput(true);
         con.setReadTimeout(30000);
 
-        con.setRequestMethod("POST");
+		con.setRequestMethod("POST");
 
-        String boundary = "----" + UUID.randomUUID().toString().replaceAll("-", "");
+		String boundary = "----" + UUID.randomUUID().toString().replaceAll("-", "");
 
-        con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-        con.setRequestProperty("X-OCR-SECRET", secretKey);
+		con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+		con.setRequestProperty("X-OCR-SECRET", secretKey);
 
-        JSONObject json = new JSONObject();
-        json.put("version", "V2");
-        json.put("requestId", UUID.randomUUID().toString());
-        json.put("timestamp", System.currentTimeMillis());
+		JSONObject json = new JSONObject();
+		json.put("version", "V2");
+		json.put("requestId", UUID.randomUUID().toString());
+		json.put("timestamp", System.currentTimeMillis());
 
-        JSONObject image = new JSONObject();
-        image.put("format", "jpg");
-        image.put("name", "demo");
+		JSONObject image = new JSONObject();
+		image.put("format", "jpg");
+		image.put("name", "demo");
 
-        JSONArray images = new JSONArray();
-        images.put(image);
+		JSONArray images = new JSONArray();
+		images.put(image);
 
-        json.put("images", images);
+		json.put("images", images);
 
-        String postParams = json.toString();
+		String postParams = json.toString();
 
-        con.connect();
+		con.connect();
 
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 
-        long start = System.currentTimeMillis();
+		long start = System.currentTimeMillis();
 
-        File file = new File(imageFile);
+		File file = new File(imageFile);
 
-        writeMultiPart(wr, postParams, file, boundary);
+		writeMultiPart(wr, postParams, file, boundary);
 
-        wr.close();
+		wr.close();
 
-        int responseCode = con.getResponseCode();
+		int responseCode = con.getResponseCode();
 
-        BufferedReader br;
+		BufferedReader br;
 
-        if (responseCode == 200) {
-            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        } else {
-            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-        }
+		if (responseCode == 200) {
+			br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		} else {
+			br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		}
 
-        StringBuilder responseBuffer = new StringBuilder();
-        String inputLine;
+		StringBuilder responseBuffer = new StringBuilder();
+		String inputLine;
 
-        while ((inputLine = br.readLine()) != null) {
-            responseBuffer.append(inputLine);
-        }
-        log.info("4");
+		while ((inputLine = br.readLine()) != null) {
+			responseBuffer.append(inputLine);
+		}
+		log.info("4");
 
-        br.close();
-        log.info(responseBuffer.toString());
+		br.close();
+		log.info(responseBuffer.toString());
 
-        return extractInferText(responseBuffer.toString()).toString();
-    }
+		return extractInferText(responseBuffer.toString()).toString();
+	}
 
-    private void writeMultiPart(OutputStream out, String jsonMessage, File file, String boundary) throws
-            IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("--").append(boundary).append("\r\n");
-        sb.append("Content-Disposition:form-data; name=\"message\"\r\n\r\n");
-        sb.append(jsonMessage);
-        sb.append("\r\n");
+	private void writeMultiPart(OutputStream out, String jsonMessage, File file, String boundary) throws
+		IOException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("--").append(boundary).append("\r\n");
+		sb.append("Content-Disposition:form-data; name=\"message\"\r\n\r\n");
+		sb.append(jsonMessage);
+		sb.append("\r\n");
 
-        out.write(sb.toString().getBytes("UTF-8"));
-        out.flush();
+		out.write(sb.toString().getBytes("UTF-8"));
+		out.flush();
 
-        if (file != null && file.isFile()) {
-            out.write(("--" + boundary + "\r\n").getBytes("UTF-8"));
-            StringBuilder fileString = new StringBuilder();
-            fileString
-                    .append("Content-Disposition:form-data; name=\"file\"; filename=");
-            fileString.append("\"" + file.getName() + "\"\r\n");
-            fileString.append("Content-Type: application/octet-stream\r\n\r\n");
-            out.write(fileString.toString().getBytes("UTF-8"));
-            out.flush();
+		if (file != null && file.isFile()) {
+			out.write(("--" + boundary + "\r\n").getBytes("UTF-8"));
+			StringBuilder fileString = new StringBuilder();
+			fileString
+				.append("Content-Disposition:form-data; name=\"file\"; filename=");
+			fileString.append("\"" + file.getName() + "\"\r\n");
+			fileString.append("Content-Type: application/octet-stream\r\n\r\n");
+			out.write(fileString.toString().getBytes("UTF-8"));
+			out.flush();
 
-            try (FileInputStream fis = new FileInputStream(file)) {
-                byte[] buffer = new byte[8192];
-                int count;
-                while ((count = fis.read(buffer)) != -1) {
-                    out.write(buffer, 0, count);
-                }
-                out.write("\r\n".getBytes());
-            }
-            out.write(("--" + boundary + "--\r\n").getBytes("UTF-8"));
-        }
-        out.flush();
-    }
+			try (FileInputStream fis = new FileInputStream(file)) {
+				byte[] buffer = new byte[8192];
+				int count;
+				while ((count = fis.read(buffer)) != -1) {
+					out.write(buffer, 0, count);
+				}
+				out.write("\r\n".getBytes());
+			}
+			out.write(("--" + boundary + "--\r\n").getBytes("UTF-8"));
+		}
+		out.flush();
+	}
 
-    private String extractInferText(String response) {
-        List<String> result = new ArrayList<>();
-        String Str_result;
+	private String extractInferText(String response) {
+		List<String> result = new ArrayList<>();
+		String Str_result;
 
-        JSONObject jobj = new JSONObject(response);
-        JSONArray imagesArray = jobj.getJSONArray("images");
+		JSONObject jobj = new JSONObject(response);
+		JSONArray imagesArray = jobj.getJSONArray("images");
 
-        if (imagesArray.length() > 0) {
-            JSONObject imageObj = imagesArray.getJSONObject(0);
-            JSONArray fieldsArray = imageObj.getJSONArray("fields");
+		if (imagesArray.length() > 0) {
+			JSONObject imageObj = imagesArray.getJSONObject(0);
+			JSONArray fieldsArray = imageObj.getJSONArray("fields");
 
-            for (int i = 0; i < fieldsArray.length(); i++) {
-                JSONObject fieldObj = fieldsArray.getJSONObject(i);
-                String inferText = fieldObj.getString("inferText");
-                result.add(inferText);
-            }
-        }
-        Str_result = result.toString().replaceAll(",", "").replace("[","").replace("]","");
-        return Str_result;
-    }
+			for (int i = 0; i < fieldsArray.length(); i++) {
+				JSONObject fieldObj = fieldsArray.getJSONObject(i);
+				String inferText = fieldObj.getString("inferText");
+				result.add(inferText);
+			}
+		}
+		Str_result = result.toString().replaceAll(",", "").replace("[", "").replace("]", "");
+		return Str_result;
+	}
 }
