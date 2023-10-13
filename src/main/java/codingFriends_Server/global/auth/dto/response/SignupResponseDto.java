@@ -6,24 +6,24 @@ import lombok.Data;
 
 @Data
 public class SignupResponseDto { //OAuth로부터 얻는 사용자 정보 + 로그인 유형
-    private String name;
-    private String email;
-    private LoginProvider loginProvider;
-    private String snsId;
+	private String name;
+	private String email;
+	private LoginProvider loginProvider;
+	private String snsId;
 
-    public Member of() {
-        return Member.builder()
-                .name(name)
-                .email(email)
-                .loginProvider(loginProvider)
-                .snsId(snsId)
-                .build();
-    }
+	public Member of() {
+		return Member.builder()
+			.name(name)
+			.email(email)
+			.loginProvider(loginProvider)
+			.snsId(snsId)
+			.build();
+	}
 
-    public SignupResponseDto(OauthResponseDto oauthResponseDto, LoginProvider loginProvider) {
-        this.name = oauthResponseDto.getName();
-        this.email = oauthResponseDto.getEmail();
-        this.snsId = oauthResponseDto.getSnsId();
-        this.loginProvider = loginProvider;
-    }
+	public SignupResponseDto(OauthResponseDto oauthResponseDto, LoginProvider loginProvider) {
+		this.name = oauthResponseDto.getName();
+		this.email = oauthResponseDto.getEmail();
+		this.snsId = oauthResponseDto.getSnsId();
+		this.loginProvider = loginProvider;
+	}
 }

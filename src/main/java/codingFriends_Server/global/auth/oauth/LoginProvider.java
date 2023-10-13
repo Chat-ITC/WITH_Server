@@ -1,15 +1,15 @@
 package codingFriends_Server.global.auth.oauth;
 
 public enum LoginProvider {
-    KAKAO("KAKAO"), NAVER("NAVER");
+	KAKAO("KAKAO"), NAVER("NAVER");
 
-    private String value;
+	private String value;
 
-    LoginProvider(String value) {
-        this.value = value;
-    }
+	LoginProvider(String value) {
+		this.value = value;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 }
