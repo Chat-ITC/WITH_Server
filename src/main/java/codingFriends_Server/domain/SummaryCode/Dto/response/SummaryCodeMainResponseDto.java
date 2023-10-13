@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SummaryCodeMainResponseDto {
-    private Long id;
-    private String title;
-    private String content;
+	private Long id;
+	private String title;
+	private String content;
 
-    public SummaryCodeMainResponseDto(SummaryCode summaryCode) {
-        this.id = summaryCode.getId();
-        this.title = summaryCode.getTitle();
-        this.content = summaryCode.getContent();
-    }
+	public SummaryCodeMainResponseDto(SummaryCode summaryCode) {
+		this.id = summaryCode.getId();
+		this.title = summaryCode.getTitle();
+		this.content = summaryCode.getContent();
+	}
 }
