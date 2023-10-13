@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LanguageRequestDto {
-    private String type;
+	private String type;
 }

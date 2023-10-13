@@ -11,22 +11,22 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "language_id")
-    private Language language;
-    @Column(nullable = false)
-    private String level;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "language_id")
+	private Language language;
+	@Column(nullable = false)
+	private String level;
 
-    @Column(length = 500, nullable = false)
-    private String title;
+	@Column(length = 500, nullable = false)
+	private String title;
 
-    @Column(length = 500, nullable = false)
-    private String content;
+	@Column(length = 500, nullable = false)
+	private String content;
 
-    @Column(length = 500, nullable = false)
-    private String answer;
+	@Column(length = 500, nullable = false)
+	private String answer;
 }

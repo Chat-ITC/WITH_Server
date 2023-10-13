@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberFavLanguageRequestDto { // 유저가 좋아하는 언어
-    private String skill_language;
+	private String skill_language;
 }

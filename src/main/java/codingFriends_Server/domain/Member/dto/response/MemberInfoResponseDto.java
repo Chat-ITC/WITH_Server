@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MemberInfoResponseDto {
-    private String name;
-    private String email;
-    private String user_level;
-    private String skill_language;
+	private String name;
+	private String email;
+	private String user_level;
+	private String skill_language;
 
-    public MemberInfoResponseDto(Member member) {
-        this.name = member.getName();
-        this.email = member.getEmail();
-        this.user_level = member.getUser_level();
-        this.skill_language = member.getSkill_language();
-    }
+	public MemberInfoResponseDto(Member member) {
+		this.name = member.getName();
+		this.email = member.getEmail();
+		this.user_level = member.getUser_level();
+		this.skill_language = member.getSkill_language();
+	}
 }

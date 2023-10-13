@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QuestionRequestDto {
 
-    private String title;
-    private String content;
-    private String answer;
-    private String level;
+	private String title;
+	private String content;
+	private String answer;
+	private String level;
 }

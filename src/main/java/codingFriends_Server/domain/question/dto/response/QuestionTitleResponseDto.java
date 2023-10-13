@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class QuestionTitleResponseDto {
-    private String title;
-    private String content;
-    private String answer;
+	private String title;
+	private String content;
+	private String answer;
 
-    public QuestionTitleResponseDto(Question question) {
-        this.title = question.getTitle();
-        this.content = question.getContent();
-        this.answer = question.getAnswer();
-    }
+	public QuestionTitleResponseDto(Question question) {
+		this.title = question.getTitle();
+		this.content = question.getContent();
+		this.answer = question.getAnswer();
+	}
 }

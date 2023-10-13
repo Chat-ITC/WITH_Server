@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionUpdateRequestDto {
-    private String title;
-    private String content;
-    private String answer;
+	private String title;
+	private String content;
+	private String answer;
 }

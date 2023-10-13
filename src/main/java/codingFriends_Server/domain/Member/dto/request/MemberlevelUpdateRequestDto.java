@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberlevelUpdateRequestDto { // 유저 실력
-    private String user_level;
+	private String user_level;
 
 }
