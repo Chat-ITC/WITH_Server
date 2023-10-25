@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.Member.dto.request;
+package codingFriends_Server.domain.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

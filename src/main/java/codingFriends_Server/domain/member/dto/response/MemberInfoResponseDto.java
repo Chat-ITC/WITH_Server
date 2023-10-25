@@ -1,6 +1,6 @@
-package codingFriends_Server.domain.Member.dto.response;
+package codingFriends_Server.domain.member.dto.response;
 
-import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

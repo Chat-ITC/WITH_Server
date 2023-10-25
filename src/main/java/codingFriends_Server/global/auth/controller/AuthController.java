@@ -1,12 +1,11 @@
 package codingFriends_Server.global.auth.controller;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.Member.service.MemberService;
-import codingFriends_Server.domain.SummaryCode.service.SummaryService;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.member.service.MemberService;
+import codingFriends_Server.domain.summaryCode.service.SummaryService;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.auth.dto.response.OauthResponseDto;
 import codingFriends_Server.global.auth.dto.response.SignupResponseDto;
-import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.auth.jwt.TokenProvider;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import codingFriends_Server.global.auth.oauth.kakao.KakaoLoginBO;
@@ -19,12 +18,8 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

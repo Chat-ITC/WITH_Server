@@ -1,6 +1,6 @@
-package codingFriends_Server.domain.SummaryCode.Dto.response;
+package codingFriends_Server.domain.summaryCode.Dto.response;
 
-import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.summaryCode.entity.SummaryCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

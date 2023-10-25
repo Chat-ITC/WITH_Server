@@ -1,13 +1,13 @@
-package codingFriends_Server.domain.SummaryCode.service;
+package codingFriends_Server.domain.summaryCode.service;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeMainResponseDto;
-import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeResponseDto;
-import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
-import codingFriends_Server.domain.SummaryCode.entity.ScrapSummaryCode;
-import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
-import codingFriends_Server.domain.SummaryCode.repository.ScrapSummaryCodeRepository;
-import codingFriends_Server.domain.SummaryCode.repository.SummaryCodeRepository;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeMainResponseDto;
+import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeResponseDto;
+import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.summaryCode.entity.ScrapSummaryCode;
+import codingFriends_Server.domain.summaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.summaryCode.repository.ScrapSummaryCodeRepository;
+import codingFriends_Server.domain.summaryCode.repository.SummaryCodeRepository;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;

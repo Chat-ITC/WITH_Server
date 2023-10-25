@@ -1,6 +1,6 @@
 package codingFriends_Server.global.auth.jwt;
 
-import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.member.entity.Member;
 import lombok.Getter;
 
 import org.springframework.security.core.userdetails.User;

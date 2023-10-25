@@ -1,7 +1,7 @@
-package codingFriends_Server.domain.SummaryCode.repository;
+package codingFriends_Server.domain.summaryCode.repository;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.summaryCode.entity.SummaryCode;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

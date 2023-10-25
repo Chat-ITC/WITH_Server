@@ -1,10 +1,10 @@
-package codingFriends_Server.domain.Member.service;
+package codingFriends_Server.domain.member.service;
 
-import codingFriends_Server.domain.Member.dto.request.MemberlevelUpdateRequestDto;
-import codingFriends_Server.domain.Member.dto.request.MemberFavLanguageRequestDto;
-import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.Member.repository.MemberRepository;
+import codingFriends_Server.domain.member.dto.request.MemberlevelUpdateRequestDto;
+import codingFriends_Server.domain.member.dto.request.MemberFavLanguageRequestDto;
+import codingFriends_Server.domain.member.dto.response.MemberInfoResponseDto;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.member.repository.MemberRepository;
 import codingFriends_Server.global.auth.dto.request.SignupRequestDto;
 import codingFriends_Server.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;

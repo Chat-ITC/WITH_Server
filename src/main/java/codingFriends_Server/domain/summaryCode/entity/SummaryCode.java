@@ -1,10 +1,7 @@
-package codingFriends_Server.domain.SummaryCode.entity;
+package codingFriends_Server.domain.summaryCode.entity;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import codingFriends_Server.domain.member.entity.Member;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,10 +9,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScrapSummaryCode {
+@Getter
+@Setter
+public class SummaryCode {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,4 +33,7 @@ public class ScrapSummaryCode {
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
+
+	@Column(nullable = false)
+	private String isScrapped;
 }

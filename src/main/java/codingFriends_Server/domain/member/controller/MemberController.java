@@ -1,9 +1,9 @@
-package codingFriends_Server.domain.Member.controller;
+package codingFriends_Server.domain.member.controller;
 
-import codingFriends_Server.domain.Member.dto.request.MemberFavLanguageRequestDto;
-import codingFriends_Server.domain.Member.dto.request.MemberlevelUpdateRequestDto;
-import codingFriends_Server.domain.Member.dto.response.MemberInfoResponseDto;
-import codingFriends_Server.domain.Member.service.MemberService;
+import codingFriends_Server.domain.member.dto.request.MemberFavLanguageRequestDto;
+import codingFriends_Server.domain.member.dto.request.MemberlevelUpdateRequestDto;
+import codingFriends_Server.domain.member.dto.response.MemberInfoResponseDto;
+import codingFriends_Server.domain.member.service.MemberService;
 import codingFriends_Server.global.auth.jwt.MemberPrincipal;
 import codingFriends_Server.global.auth.service.AuthService;
 import codingFriends_Server.global.common.exception.CustomException;

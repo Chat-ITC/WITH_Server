@@ -1,7 +1,7 @@
-package codingFriends_Server.domain.Member.entity;
+package codingFriends_Server.domain.member.entity;
 
-import codingFriends_Server.domain.SummaryCode.entity.ScrapSummaryCode;
-import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.summaryCode.entity.ScrapSummaryCode;
+import codingFriends_Server.domain.summaryCode.entity.SummaryCode;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.*;
 

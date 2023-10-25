@@ -1,6 +1,6 @@
 package codingFriends_Server.global.auth.dto.response;
 
-import codingFriends_Server.domain.Member.entity.Member;
+import codingFriends_Server.domain.member.entity.Member;
 import codingFriends_Server.global.auth.oauth.LoginProvider;
 import lombok.Data;
 

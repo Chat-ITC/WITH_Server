@@ -1,23 +1,19 @@
 package codingFriends_Server.global.auth.jwt;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.Member.repository.MemberRepository;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.member.repository.MemberRepository;
 import codingFriends_Server.global.common.exception.CustomException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
 import java.util.Date;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor

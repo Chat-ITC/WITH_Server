@@ -1,8 +1,7 @@
 package codingFriends_Server.domain.ai.chatGpt.service;
 
-import codingFriends_Server.domain.Member.entity.Member;
-import codingFriends_Server.domain.SummaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
-import codingFriends_Server.domain.SummaryCode.entity.SummaryCode;
+import codingFriends_Server.domain.member.entity.Member;
+import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import codingFriends_Server.domain.ai.chatGpt.dto.request.ChatGptRequestDto;
 import codingFriends_Server.domain.ai.chatGpt.dto.response.ChatGptChoiceResponseDto;
@@ -17,7 +16,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
