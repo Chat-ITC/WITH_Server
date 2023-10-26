@@ -1,9 +1,9 @@
 package codingFriends_Server.domain.summaryCode.service;
 
 import codingFriends_Server.domain.member.entity.Member;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeMainResponseDto;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeResponseDto;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeMainResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.summaryCode.entity.ScrapSummaryCode;
 import codingFriends_Server.domain.summaryCode.entity.SummaryCode;
 import codingFriends_Server.domain.summaryCode.repository.ScrapSummaryCodeRepository;

@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.summaryCode.Dto.response;
+package codingFriends_Server.domain.summaryCode.dto.response;
 
 import codingFriends_Server.domain.summaryCode.entity.ScrapSummaryCode;
 import codingFriends_Server.domain.summaryCode.entity.SummaryCode;

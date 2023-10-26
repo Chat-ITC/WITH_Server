@@ -1,7 +1,7 @@
 package codingFriends_Server.domain.ai.chatGpt.service;
 
 import codingFriends_Server.domain.member.entity.Member;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.ai.chatGpt.dto.Message;
 import codingFriends_Server.domain.ai.chatGpt.dto.request.ChatGptRequestDto;
 import codingFriends_Server.domain.ai.chatGpt.dto.response.ChatGptChoiceResponseDto;

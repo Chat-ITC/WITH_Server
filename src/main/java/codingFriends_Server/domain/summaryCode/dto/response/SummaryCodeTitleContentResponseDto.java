@@ -1,4 +1,4 @@
-package codingFriends_Server.domain.summaryCode.Dto.response;
+package codingFriends_Server.domain.summaryCode.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

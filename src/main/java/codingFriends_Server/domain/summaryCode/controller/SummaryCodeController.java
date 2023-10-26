@@ -1,8 +1,8 @@
 package codingFriends_Server.domain.summaryCode.controller;
 
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeMainResponseDto;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeResponseDto;
-import codingFriends_Server.domain.summaryCode.Dto.response.SummaryCodeTitleContentResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeMainResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeResponseDto;
+import codingFriends_Server.domain.summaryCode.dto.response.SummaryCodeTitleContentResponseDto;
 import codingFriends_Server.domain.summaryCode.service.SummaryService;
 import codingFriends_Server.domain.ai.chatGpt.service.ChatGptService;
 import codingFriends_Server.domain.ai.ocr.service.OCRGeneralService;
